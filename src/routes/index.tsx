@@ -105,7 +105,7 @@ function Index() {
           {paths.map((p, i) => (
             <article
               key={p.n}
-              className={`flex flex-col py-10 sm:px-4 md:px-8 lg:px-10 ${i > 0 ? "border-t border-border sm:border-t-0" : ""} ${i === 2 ? "sm:col-span-2 sm:border-t md:col-span-1 md:border-t-0" : ""}`}> 0 ? "border-t border-border sm:border-t-0" : ""} ${i === 2 ? "sm:col-span-2 sm:border-t md:col-span-1 md:border-t-0" : ""} sm:px-4 md:first:pl-0 md:last:pr-0`}
+              className={`flex flex-col py-10 sm:px-4 md:px-8 lg:px-10 ${i > 0 ? "border-t border-border sm:border-t-0" : ""} ${i === 2 ? "sm:col-span-2 sm:border-t md:col-span-1 md:border-t-0" : ""}`}
             >
               <img
                 src={p.img}
