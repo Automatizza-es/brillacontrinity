@@ -84,11 +84,11 @@ function ConoceTuDiamante() {
           Tu fecha de nacimiento contiene mucha más información de la que imaginas. Conoce tus números. Comprende tu
           camino. Descubre tus dones.
         </p>
-        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-          <ReservaButton />
-          <span className="text-sm tracking-wide text-muted-foreground">
+        <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <ReservaButton className="px-8 py-4 text-base" />
+          <p className="font-serif text-xl leading-snug text-foreground/85">
             Sesión individual online · 60 minutos · 38 €
-          </span>
+          </p>
         </div>
       </PageIntro>
 
