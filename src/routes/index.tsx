@@ -1,3 +1,4 @@
+import { getPoem } from "@/content/poems";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import heroBotanico from "@/assets/hero-botanico.jpg";
@@ -159,10 +160,10 @@ function Index() {
             <h2 className="mt-5 text-4xl leading-tight sm:text-5xl">Mis palabras, también en papel.</h2>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-foreground/80">
               Cuatro de mis poemas forman parte de <em>{book.title}</em>, una obra colectiva publicada en{" "}
-              {book.country} por {book.publisher} en {book.year}.
+              {book.place} por {book.publisher} en {book.year}.
             </p>
             <ul className="mt-8 max-w-md divide-y divide-border border-y border-border">
-              {book.poems?.map((t) => (
+              {book.poemSlugs?.map((s) => getPoem(s)?.title ?? s).map((t) => (
                 <li key={t} className="py-3 font-serif text-xl italic">
                   {t}
                 </li>
