@@ -52,13 +52,13 @@ function Index() {
   return (
     <>
       {/* Hero */}
-      <section className="mx-auto grid max-w-7xl items-center gap-10 px-6 pb-12 pt-6 sm:px-10 md:grid-cols-12 md:gap-8 md:pb-14 md:pt-8">
-        <div className="md:col-span-6 lg:col-span-6">
+      <section className="mx-auto grid max-w-7xl items-center gap-8 px-6 pb-10 pt-4 sm:px-10 md:min-h-[480px] md:grid-cols-[52fr_48fr] md:gap-0 md:pb-12 md:pt-6 lg:min-h-[520px]">
+        <div className="relative z-10 md:pr-6">
           <p className="eyebrow fade-up flex items-center gap-3">
             <span className="h-px w-8 bg-mist" aria-hidden />
             Autoconocimiento · Coaching · Poesía
           </p>
-          <h1 className="fade-up mt-6 text-[clamp(3.4rem,9vw,7rem)] leading-[0.92] tracking-[-0.02em]">
+          <h1 className="fade-up mt-6 text-[clamp(3.4rem,8.5vw,7.2rem)] leading-[0.92] tracking-[-0.02em]">
             Atrévete
             <br />
             <span className="italic">a brillar</span>
@@ -82,15 +82,15 @@ function Index() {
             </Link>
           </div>
         </div>
-        <figure className="fade-up relative md:col-span-6 lg:col-span-5 lg:col-start-8">
+        <figure className="fade-up relative md:-mr-10 lg:-mr-16">
           <img
             src={heroLuz}
             alt="Luz de mañana sobre una mesa con un libro y una espiga en un vaso"
             width={1024}
             height={1152}
-            className="aspect-[4/3] w-full object-cover md:aspect-[5/4]"
+            className="hero-fade aspect-[16/10] w-full object-cover object-[60%_50%] sm:aspect-[16/9] md:aspect-auto md:h-[480px] lg:h-[520px]"
           />
-          <figcaption className="absolute bottom-0 left-0 bg-background/90 px-5 py-4 font-serif text-lg italic leading-snug">
+          <figcaption className="mt-4 font-serif text-lg italic leading-snug text-foreground/80 md:absolute md:bottom-0 md:left-0 md:mt-0">
             Hay una luz en ti
             <br />
             que también es palabra.
