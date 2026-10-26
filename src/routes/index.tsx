@@ -52,13 +52,21 @@ function Index() {
   return (
     <>
       {/* Hero */}
-      <section className="mx-auto grid max-w-7xl items-center gap-8 px-6 pb-10 pt-4 sm:px-10 md:min-h-[480px] md:grid-cols-[52fr_48fr] md:gap-0 md:pb-12 md:pt-6 lg:min-h-[520px]">
-        <div className="relative z-10 md:pr-6">
+      <section className="relative mx-auto max-w-7xl overflow-hidden px-6 pb-10 pt-4 sm:px-10 md:pb-14 md:pt-8">
+        <img
+          src={heroLuz}
+          alt=""
+          aria-hidden
+          width={1024}
+          height={1152}
+          className="hero-fade pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[34%] object-cover object-[60%_50%] opacity-45 saturate-50 md:block"
+        />
+        <div className="relative z-10 max-w-2xl">
           <p className="eyebrow fade-up flex items-center gap-3">
             <span className="h-px w-8 bg-mist" aria-hidden />
             Autoconocimiento · Coaching · Poesía
           </p>
-          <h1 className="fade-up mt-6 text-[clamp(3.4rem,8.5vw,7.2rem)] leading-[0.92] tracking-[-0.02em]">
+          <h1 className="fade-up mt-6 text-[clamp(3.4rem,8vw,6.6rem)] leading-[0.92] tracking-[-0.02em]">
             Atrévete
             <br />
             <span className="italic">a brillar</span>
@@ -82,45 +90,20 @@ function Index() {
             </Link>
           </div>
         </div>
-        <figure className="fade-up relative md:-mr-10 lg:-mr-16">
-          <img
-            src={heroLuz}
-            alt="Luz de mañana sobre una mesa con un libro y una espiga en un vaso"
-            width={1024}
-            height={1152}
-            className="hero-fade aspect-[16/10] w-full object-cover object-[60%_50%] sm:aspect-[16/9] md:aspect-auto md:h-[480px] lg:h-[520px]"
-          />
-          <figcaption className="mt-4 font-serif text-lg italic leading-snug text-foreground/80 md:absolute md:bottom-0 md:left-0 md:mt-0">
-            Hay una luz en ti
-            <br />
-            que también es palabra.
-            <span className="mt-3 block h-px w-8 bg-rose" aria-hidden />
-          </figcaption>
-        </figure>
       </section>
 
       {/* Tres caminos */}
       <section aria-label="Tres caminos" className="mx-auto max-w-7xl border-t border-border px-6 sm:px-10">
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 md:divide-x md:divide-border">
+        <div className="grid md:grid-cols-3 md:divide-x md:divide-border">
           {paths.map((p, i) => (
             <article
-              key={p.n}
-              className={`flex flex-col py-10 sm:px-4 md:px-8 lg:px-10 ${i > 0 ? "border-t border-border sm:border-t-0" : ""} ${i === 2 ? "sm:col-span-2 sm:border-t md:col-span-1 md:border-t-0" : ""}`}
+              key={p.title}
+              className={`flex flex-col py-10 md:px-8 md:py-12 lg:px-10 ${i > 0 ? "border-t border-border md:border-t-0" : ""} ${i === 0 ? "md:pl-0" : ""}`}
             >
-              <img
-                src={p.img}
-                alt={p.alt}
-                width={992}
-                height={672}
-                loading="lazy"
-                className="aspect-[16/9] w-full object-cover"
-              />
-              <div className="mt-6 flex items-baseline gap-4">
-                <span className={`font-serif text-lg ${i === 1 ? "text-mist" : "text-rose"}`}>{p.n}</span>
-                <h2 className="text-3xl lg:text-[2.2rem]">{p.title}</h2>
-              </div>
-              <p className="mt-3 flex-1 leading-relaxed text-foreground/75">{p.text}</p>
-              <Link to={p.to} className="text-link mt-6 self-start">
+              <span className={`h-px w-8 ${i === 1 ? "bg-mist" : "bg-rose"}`} aria-hidden />
+              <h2 className="mt-6 text-4xl lg:text-[2.6rem]">{p.title}</h2>
+              <p className="mt-4 flex-1 leading-relaxed text-foreground/75">{p.text}</p>
+              <Link to={p.to} className="text-link mt-8 self-start">
                 {p.cta} <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
             </article>
