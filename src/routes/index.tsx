@@ -90,7 +90,7 @@ function Index() {
             height={1152}
             className="hero-fade aspect-[16/10] w-full object-cover object-[60%_50%] sm:aspect-[16/9] md:aspect-auto md:h-[480px] lg:h-[520px]"
           />
-          <figcaption className="mt-4 font-serif text-lg italic leading-snug text-foreground/80 md:absolute md:bottom-10 md:left-0 md:mt-0">
+          <figcaption className="mt-4 font-serif text-lg italic leading-snug text-foreground/80 md:absolute md:bottom-0 md:left-0 md:mt-0">
             Hay una luz en ti
             <br />
             que también es palabra.
