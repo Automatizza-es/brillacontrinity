@@ -39,7 +39,7 @@ const paths = [
 ];
 
 function Index() {
-  const book = publications[0];
+  const book = publications[0]!;
   return (
     <>
       {/* Hero */}
