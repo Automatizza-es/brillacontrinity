@@ -57,7 +57,7 @@ export function SiteHeader() {
 
         <Link
           to="/contacto"
-          className="hidden rounded-full border border-rose px-5 py-2.5 text-sm text-foreground transition-colors hover:bg-rose-soft lg:inline-block"
+          className="hidden rounded-full bg-rose-soft px-6 py-2.5 text-sm text-foreground transition-colors hover:bg-rose/40 lg:inline-block"
         >
           Reserva tu sesión
         </Link>
