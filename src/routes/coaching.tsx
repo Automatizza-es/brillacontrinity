@@ -8,7 +8,7 @@ export const Route = createFileRoute("/coaching")({
   head: () =>
     pageMeta(
       "Coaching personal",
-      "Un espacio para escucharte y volver a ti. Sesión individual de coaching con Trinity: 60 minutos, 38 €.",
+      "Un espacio para escucharte y volver a ti. Sesión individual de coaching con Trinity: 60 minutos, 50 €.",
     ),
   component: Coaching,
 });
@@ -71,7 +71,7 @@ function Coaching() {
         </div>
         <div className="fade-up mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
           <ContactButton>Reserva tu sesión</ContactButton>
-          <p className="font-serif text-xl text-foreground/85">Sesión individual · 60 minutos · 38 €</p>
+          <p className="font-serif text-xl text-foreground/85">Sesión individual · 60 minutos · 50 €</p>
         </div>
       </section>
 
@@ -146,7 +146,7 @@ function Coaching() {
               </div>
               <div className="text-right">
                 <p className="eyebrow">Precio</p>
-                <p className="mt-3 font-serif text-3xl leading-none sm:text-4xl">38 €</p>
+                <p className="mt-3 font-serif text-3xl leading-none sm:text-4xl">50 €</p>
               </div>
             </div>
             <p className="mt-5 text-base text-muted-foreground">

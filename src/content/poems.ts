@@ -27,7 +27,6 @@ export const poems: Poem[] = [
   {
     slug: "quise-ser",
     title: "Quise ser…",
-    provisionalTitle: true,
     text: "Quise ser organizada,\nquise ser mejor persona,\nquise ser considerada\nquise ser útil, ser vista, ser reconocida...\nQuise ser...\nPero en ese querer ser, quedó por completo olvidado mi ser\n¿Qué quería él?\nQuizás que me dejara tranquila\nQuizás que no intentara frenar ni dirigir el caos de mi vida\nQuizás tan solo ser libre\nQuizás simplemente dejar de querer\nQuizás solo SER",
   },
   {
