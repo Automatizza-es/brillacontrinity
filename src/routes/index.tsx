@@ -3,7 +3,6 @@ import { ArrowRight } from "lucide-react";
 import escritura from "@/assets/escritura.jpg";
 import { pageMeta } from "@/lib/seo";
 import { Signature } from "@/components/site/Signature";
-import { Pending } from "@/components/site/PageIntro";
 import { publications } from "@/content/publications";
 
 export const Route = createFileRoute("/")({
@@ -184,4 +183,3 @@ function Index() {
   );
 }
 
-export { Pending };
