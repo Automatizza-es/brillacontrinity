@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { pageMeta } from "@/lib/seo";
 import { PageIntro, Section } from "@/components/site/PageIntro";
 import { Signature } from "@/components/site/Signature";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/conoce-tu-diamante")({
   head: () =>
@@ -65,7 +66,10 @@ function ReservaButton({ className = "" }: { className?: string }) {
   return (
     <a
       href={RESERVA_URL}
-      className={`inline-flex items-center rounded-full bg-primary px-7 py-3 text-sm tracking-wide text-primary-foreground transition-opacity hover:opacity-90 ${className}`}
+      className={cn(
+        "inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base tracking-wide text-primary-foreground transition-opacity hover:opacity-90",
+        className,
+      )}
     >
       Reservar mi sesión
     </a>
@@ -84,11 +88,11 @@ function ConoceTuDiamante() {
           Tu fecha de nacimiento contiene mucha más información de la que imaginas. Conoce tus números. Comprende tu
           camino. Descubre tus dones.
         </p>
-        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+        <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
           <ReservaButton />
-          <span className="text-sm tracking-wide text-muted-foreground">
+          <p className="font-serif text-xl leading-snug text-foreground/85">
             Sesión individual online · 60 minutos · 38 €
-          </span>
+          </p>
         </div>
       </PageIntro>
 
@@ -220,11 +224,21 @@ function ConoceTuDiamante() {
           <span className="italic text-primary">Y cada una de sus facetas tiene algo que mostrarte.</span>
         </p>
         <p className="mt-6 font-serif text-2xl italic text-foreground/85">Hemos venido a brillar.</p>
-        <div className="mt-10 flex flex-col items-center gap-4">
-          <ReservaButton />
-          <span className="text-sm tracking-wide text-muted-foreground">
-            38 € · 60 min · Sesión individual online · Indícame tu fecha de nacimiento al reservar
-          </span>
+        <div className="mx-auto mt-12 max-w-lg border border-border px-8 py-8 sm:px-10">
+          <div className="grid grid-cols-2 gap-8">
+            <div>
+              <p className="eyebrow">Precio</p>
+              <p className="mt-3 font-serif text-3xl leading-none sm:text-4xl">38 €</p>
+            </div>
+            <div className="text-right">
+              <p className="eyebrow">Duración</p>
+              <p className="mt-3 font-serif text-3xl leading-none sm:text-4xl">60 min</p>
+            </div>
+          </div>
+          <ReservaButton className="mt-8 w-full" />
+          <p className="mt-5 text-center text-base leading-relaxed text-muted-foreground">
+            Sesión individual online · Indícame tu fecha de nacimiento al reservar
+          </p>
         </div>
         <div className="mt-14 flex justify-center">
           <Signature size="sm" />
