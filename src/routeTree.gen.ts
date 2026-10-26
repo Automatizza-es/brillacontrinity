@@ -15,6 +15,8 @@ import { Route as ConoceTuDiamanteRouteImport } from './routes/conoce-tu-diamant
 import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as PublicacionesRouteImport } from './routes/publicaciones'
 import { Route as SobreMiRouteImport } from './routes/sobre-mi'
+import { Route as PoesiaIndexRouteImport } from './routes/poesia.index'
+import { Route as PoesiaSlugRouteImport } from './routes/poesia.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +48,16 @@ const SobreMiRoute = SobreMiRouteImport.update({
   path: '/sobre-mi',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PoesiaIndexRoute = PoesiaIndexRouteImport.update({
+  id: '/poesia/',
+  path: '/poesia/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoesiaSlugRoute = PoesiaSlugRouteImport.update({
+  id: '/poesia/$slug',
+  path: '/poesia/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +66,8 @@ export interface FileRoutesByFullPath {
   '/contacto': typeof ContactoRoute
   '/publicaciones': typeof PublicacionesRoute
   '/sobre-mi': typeof SobreMiRoute
+  '/poesia/$slug': typeof PoesiaSlugRoute
+  '/poesia/': typeof PoesiaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +76,8 @@ export interface FileRoutesByTo {
   '/contacto': typeof ContactoRoute
   '/publicaciones': typeof PublicacionesRoute
   '/sobre-mi': typeof SobreMiRoute
+  '/poesia/$slug': typeof PoesiaSlugRoute
+  '/poesia': typeof PoesiaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +87,8 @@ export interface FileRoutesById {
   '/contacto': typeof ContactoRoute
   '/publicaciones': typeof PublicacionesRoute
   '/sobre-mi': typeof SobreMiRoute
+  '/poesia/$slug': typeof PoesiaSlugRoute
+  '/poesia/': typeof PoesiaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +99,8 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/publicaciones'
     | '/sobre-mi'
+    | '/poesia/$slug'
+    | '/poesia/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +109,8 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/publicaciones'
     | '/sobre-mi'
+    | '/poesia/$slug'
+    | '/poesia'
   id:
     | '__root__'
     | '/'
@@ -97,6 +119,8 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/publicaciones'
     | '/sobre-mi'
+    | '/poesia/$slug'
+    | '/poesia/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +130,8 @@ export interface RootRouteChildren {
   ContactoRoute: typeof ContactoRoute
   PublicacionesRoute: typeof PublicacionesRoute
   SobreMiRoute: typeof SobreMiRoute
+  PoesiaSlugRoute: typeof PoesiaSlugRoute
+  PoesiaIndexRoute: typeof PoesiaIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -152,6 +178,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SobreMiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/poesia/': {
+      id: '/poesia/'
+      path: '/poesia'
+      fullPath: '/poesia/'
+      preLoaderRoute: typeof PoesiaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/poesia/$slug': {
+      id: '/poesia/$slug'
+      path: '/poesia/$slug'
+      fullPath: '/poesia/$slug'
+      preLoaderRoute: typeof PoesiaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -162,6 +202,8 @@ const rootRouteChildren: RootRouteChildren = {
   ContactoRoute: ContactoRoute,
   PublicacionesRoute: PublicacionesRoute,
   SobreMiRoute: SobreMiRoute,
+  PoesiaSlugRoute: PoesiaSlugRoute,
+  PoesiaIndexRoute: PoesiaIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
