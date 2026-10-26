@@ -65,7 +65,10 @@ function ReservaButton({ className = "" }: { className?: string }) {
   return (
     <a
       href={RESERVA_URL}
-      className={`inline-flex items-center rounded-full bg-primary px-7 py-3 text-sm tracking-wide text-primary-foreground transition-opacity hover:opacity-90 ${className}`}
+      className={cn(
+        "inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base tracking-wide text-primary-foreground transition-opacity hover:opacity-90",
+        className,
+      )}
     >
       Reservar mi sesión
     </a>
