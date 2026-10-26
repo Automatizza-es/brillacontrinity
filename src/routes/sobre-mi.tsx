@@ -1,3 +1,4 @@
+import { CONTACT_MAILTO } from "@/lib/contact";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { pageMeta } from "@/lib/seo";
@@ -141,9 +142,9 @@ function SobreMi() {
         <p className="mt-10 font-serif text-3xl sm:text-4xl">Conocerte. Ser. Brillar.</p>
         <p className="mt-6 font-script text-5xl leading-none text-rose">Trinity</p>
         <p className="mt-10 text-base">
-          <Link to="/contacto" className="text-link">
+          <a href={CONTACT_MAILTO} className="text-link">
             Hablemos <ArrowRight className="h-4 w-4" aria-hidden />
-          </Link>
+          </a>
         </p>
       </section>
     </>

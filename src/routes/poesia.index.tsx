@@ -33,12 +33,9 @@ function PoesiaIndex() {
                         <span className="text-mist">
                           Antología · {pub.title}, {pub.year}
                         </span>
-                      ) : p.text ? (
-                        "Inédito"
                       ) : (
-                        "Texto pendiente"
+                        "Inédito"
                       )}
-                      {p.provisionalTitle && " · Título provisional"}
                     </p>
                   </div>
                   <span className="text-link shrink-0">

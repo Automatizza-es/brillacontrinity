@@ -1,3 +1,4 @@
+import { CONTACT_MAILTO } from "@/lib/contact";
 import { getPoem } from "@/content/poems";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
@@ -151,9 +152,9 @@ function Index() {
       <section className="mx-auto max-w-7xl px-6 py-20 sm:px-10 lg:py-32">
         <div className="grid items-start gap-12 md:grid-cols-12">
           <div className="md:col-span-4">
-            <div className="flex aspect-[2/3] max-w-[240px] items-center justify-center border border-dashed border-mist bg-mist-soft/50 p-6 text-center">
-              <span className="eyebrow text-mist">Portada del libro · pendiente</span>
-            </div>
+            {publications[0]?.coverUrl && (
+              <img src={publications[0].coverUrl} alt={`Portada de ${publications[0].title}`} className="w-full max-w-[280px]" loading="lazy" />
+            )}
           </div>
           <div className="md:col-span-7 md:col-start-6">
             <p className="eyebrow">Publicación</p>
@@ -185,9 +186,9 @@ function Index() {
         <div className="mt-12 flex justify-center">
           <Signature size="sm" />
         </div>
-        <Link to="/contacto" className="text-link mt-10">
+        <a href={CONTACT_MAILTO} className="text-link mt-10">
           Hablemos <ArrowRight className="h-4 w-4" aria-hidden />
-        </Link>
+        </a>
       </section>
     </>
   );
