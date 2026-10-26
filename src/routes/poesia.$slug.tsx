@@ -43,7 +43,6 @@ function PoemPage() {
         <ArrowLeft className="h-4 w-4" aria-hidden /> Poesía
       </Link>
       <h1 className="fade-up mt-12 text-5xl italic leading-tight sm:text-6xl">{poem.title}</h1>
-      {poem.provisionalTitle && <p className="eyebrow mt-3">Título provisional</p>}
       {poem.writtenOn && <p className="eyebrow mt-3">Escrito el {poem.writtenOn}</p>}
       <div className="fade-up mt-12">
         {poem.text ? (

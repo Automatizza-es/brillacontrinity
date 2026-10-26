@@ -36,7 +36,6 @@ function PoesiaIndex() {
                       ) : (
                         "Inédito"
                       )}
-                      {p.provisionalTitle && " · Título provisional"}
                     </p>
                   </div>
                   <span className="text-link shrink-0">
