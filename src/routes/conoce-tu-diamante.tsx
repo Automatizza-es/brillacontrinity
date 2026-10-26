@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { pageMeta } from "@/lib/seo";
 import { PageIntro, Section } from "@/components/site/PageIntro";
 import { Signature } from "@/components/site/Signature";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/conoce-tu-diamante")({
   head: () =>
