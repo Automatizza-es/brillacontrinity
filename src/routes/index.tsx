@@ -82,13 +82,13 @@ function Index() {
             </Link>
           </div>
         </div>
-        <figure className="fade-up relative self-stretch md:-mr-10 lg:-mr-16">
+        <figure className="fade-up relative md:-mr-10 lg:-mr-16">
           <img
             src={heroLuz}
             alt="Luz de mañana sobre una mesa con un libro y una espiga en un vaso"
             width={1024}
             height={1152}
-            className="hero-fade aspect-[16/10] w-full object-cover object-[60%_50%] sm:aspect-[16/9] md:aspect-auto md:h-full md:min-h-[480px]"
+            className="hero-fade aspect-[16/10] w-full object-cover object-[60%_50%] sm:aspect-[16/9] md:aspect-auto md:h-[480px] lg:h-[520px]"
           />
           <figcaption className="mt-4 font-serif text-lg italic leading-snug text-foreground/80 md:absolute md:bottom-10 md:left-0 md:mt-0">
             Hay una luz en ti
