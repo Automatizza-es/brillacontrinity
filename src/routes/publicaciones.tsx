@@ -18,7 +18,7 @@ function Publicaciones() {
         <Section key={b.slug} className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
             {b.coverUrl ? (
-              <img src={b.coverUrl} alt={`Portada de ${b.title}`} className="w-full max-w-[260px]" loading="lazy" />
+              <img src={b.coverUrl} alt={`Portada de ${b.title}`} className="w-full max-w-[320px]" loading="lazy" />
             ) : (
               <div className="flex aspect-[2/3] max-w-[240px] items-center justify-center border border-dashed border-mist bg-mist-soft/50 p-6 text-center">
                 <span className="eyebrow text-mist">Portada · pendiente</span>
