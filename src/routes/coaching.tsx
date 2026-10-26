@@ -1,3 +1,4 @@
+import { CONTACT_MAILTO } from "@/lib/contact";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { pageMeta } from "@/lib/seo";
 import { Section } from "@/components/site/PageIntro";
@@ -34,15 +35,15 @@ const areas = [
 
 function ContactButton({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <Link
-      to="/contacto"
+    <a
+      href={CONTACT_MAILTO}
       className={cn(
         "inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base tracking-wide text-primary-foreground transition-opacity hover:opacity-90",
         className,
       )}
     >
       {children}
-    </Link>
+    </a>
   );
 }
 
@@ -150,7 +151,7 @@ function Coaching() {
               </div>
             </div>
             <p className="mt-5 text-base text-muted-foreground">
-              Sesión individual · Modalidad pendiente de confirmar
+              Sesión individual · 60 minutos
             </p>
             <ContactButton className="mt-8 w-full">Reservar mi sesión de coaching</ContactButton>
           </div>

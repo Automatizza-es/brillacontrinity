@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { pageMeta } from "@/lib/seo";
-import { PageIntro, Pending, Section } from "@/components/site/PageIntro";
+import { PageIntro, Section } from "@/components/site/PageIntro";
 import { publications } from "@/content/publications";
 import { getPoem } from "@/content/poems";
 
@@ -19,11 +19,7 @@ function Publicaciones() {
           <div className="md:col-span-4">
             {b.coverUrl ? (
               <img src={b.coverUrl} alt={`Portada de ${b.title}`} className="w-full max-w-[320px]" loading="lazy" />
-            ) : (
-              <div className="flex aspect-[2/3] max-w-[240px] items-center justify-center border border-dashed border-mist bg-mist-soft/50 p-6 text-center">
-                <span className="eyebrow text-mist">Portada · pendiente</span>
-              </div>
-            )}
+            ) : null}
           </div>
           <div className="md:col-span-7 md:col-start-6">
             <p className="eyebrow">{b.kind}</p>
@@ -68,7 +64,7 @@ function Publicaciones() {
               </>
             )}
             <div className="mt-10 grid gap-6 sm:grid-cols-2">
-              {b.synopsis ? <p>{b.synopsis}</p> : <Pending label="Sinopsis" />}
+              {b.synopsis ? <p>{b.synopsis}</p> : <div />}
               {b.purchaseLinks?.length ? (
                 <ul>
                   {b.purchaseLinks.map((l) => (

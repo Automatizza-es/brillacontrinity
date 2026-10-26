@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL, CONTACT_MAILTO, INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/contact";
 import { Link } from "@tanstack/react-router";
 import { Signature } from "./Signature";
 import { mainNav } from "./nav";
@@ -29,9 +30,10 @@ export function SiteFooter() {
         </nav>
         <div>
           <p className="eyebrow mb-4">Contacto</p>
-          <p className="text-sm text-muted-foreground">
-            <span className="border-b border-dashed border-mist">Pendiente: email y redes sociales</span>
-          </p>
+          <ul className="space-y-2 text-sm">
+            <li><a href={CONTACT_MAILTO} className="text-foreground/80 hover:text-primary">{CONTACT_EMAIL}</a></li>
+            <li><a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="text-foreground/80 hover:text-primary">Instagram · @{INSTAGRAM_HANDLE}</a></li>
+          </ul>
         </div>
       </div>
       <div className="border-t border-border">

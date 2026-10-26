@@ -1,7 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { pageMeta } from "@/lib/seo";
-import { Pending } from "@/components/site/PageIntro";
 import { getPoem } from "@/content/poems";
 import { getPublication } from "@/content/publications";
 
@@ -49,9 +48,7 @@ function PoemPage() {
       <div className="fade-up mt-12">
         {poem.text ? (
           <p className="poem text-xl leading-[1.7] sm:text-2xl">{poem.text}</p>
-        ) : (
-          <Pending label="Texto del poema">El texto original lo facilitará Trinity.</Pending>
-        )}
+        ) : null}
       </div>
       <p className="mt-14 font-script text-5xl leading-none text-rose">Trinity</p>
       {pub && (

@@ -1,3 +1,4 @@
+import { CONTACT_MAILTO } from "@/lib/contact";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -55,12 +56,12 @@ export function SiteHeader() {
           )}
         </nav>
 
-        <Link
-          to="/contacto"
+        <a
+          href={CONTACT_MAILTO}
           className="hidden rounded-full bg-rose-soft px-6 py-2.5 text-sm text-foreground transition-colors hover:bg-rose/40 lg:inline-block"
         >
           Reserva tu sesión
-        </Link>
+        </a>
 
         <button
           type="button"
@@ -104,12 +105,12 @@ export function SiteHeader() {
               ),
             )}
           </ul>
-          <Link
-            to="/contacto"
+          <a
+            href={CONTACT_MAILTO}
             className="mt-8 inline-block rounded-full border border-rose px-6 py-3 text-sm hover:bg-rose-soft"
           >
             Reserva tu sesión
-          </Link>
+          </a>
         </nav>
       )}
     </header>
