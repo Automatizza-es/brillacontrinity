@@ -65,14 +65,87 @@ function SobreMi() {
               A través de Conoce tu Diamante, comparto la numerología como una herramienta simbólica para reflexionar
               sobre nuestra personalidad, nuestros dones y los desafíos que encontramos en la vida.
             </p>
-            <p className="text-base">
+            <p>
+              Desde el coaching, acompaño a quienes desean escucharse, reconocer aquello que les limita y encontrar sus
+              propias respuestas.
+            </p>
+            <p>
+              Y a través de la poesía, doy voz a emociones, pensamientos y experiencias que forman parte de mi manera de
+              entender la vida.
+            </p>
+            <div className="flex flex-wrap gap-x-10 gap-y-4 pt-2 text-base">
               <Link to="/conoce-tu-diamante" className="text-link">
                 Conoce tu Diamante <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
-            </p>
+              <Link to="/coaching" className="text-link">
+                Coaching <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
+              <Link to="/poesia" className="text-link">
+                Mi poesía <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
+            </div>
           </div>
         </div>
       </Section>
+
+      <Section>
+        <div className="grid gap-12 md:grid-cols-12">
+          <div className="md:col-span-6">
+            <h2 className="text-4xl leading-tight sm:text-5xl">
+              Escribir también es <span className="italic text-primary">descubrirme.</span>
+            </h2>
+            <div className="mt-8 space-y-6 text-lg leading-relaxed text-foreground/80">
+              <p>
+                Escribo sobre lo que siento, sobre lo que aprendo y sobre todas esas veces en las que nos perdemos
+                intentando encajar.
+              </p>
+              <p>
+                Mis poemas hablan de aceptación, libertad, miedos, contradicciones y de la importancia de permitirnos
+                ser quienes somos.
+              </p>
+              <p>
+                Cuatro de ellos forman parte de la antología <em>Cuentos y poesía</em>, publicada por Editorial Rubin
+                en Argentina en 2026.
+              </p>
+            </div>
+          </div>
+          <figure className="flex flex-col justify-center md:col-span-5 md:col-start-8">
+            <blockquote className="font-serif text-3xl italic leading-snug text-foreground sm:text-4xl">
+              «Yo soy todo eso y mi error
+              <br />
+              es querer no serlo»
+            </blockquote>
+            <figcaption className="mt-6 text-sm tracking-wide text-muted-foreground">
+              — Trinity, <em>Yo soy agua</em>
+            </figcaption>
+            <p className="mt-10 text-base">
+              <Link to="/poesia" className="text-link">
+                Descubrir mis poemas <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
+            </p>
+          </figure>
+        </div>
+      </Section>
+
+      <section className="mx-auto max-w-4xl border-t border-border px-6 py-24 text-center sm:px-10 lg:py-28">
+        <h2 className="text-4xl leading-tight sm:text-5xl">
+          Atrévete a <span className="italic text-primary">brillar.</span>
+        </h2>
+        <div className="mx-auto mt-8 max-w-2xl space-y-5 text-lg leading-relaxed text-foreground/80">
+          <p>Para mí, brillar no significa ser perfecta ni convertirse en alguien diferente.</p>
+          <p>
+            Significa reconocer nuestra propia luz, aceptar también nuestras sombras y atrevernos a mostrarnos tal
+            como somos.
+          </p>
+        </div>
+        <p className="mt-10 font-serif text-3xl sm:text-4xl">Conocerte. Ser. Brillar.</p>
+        <p className="mt-6 font-script text-5xl leading-none text-rose">Trinity</p>
+        <p className="mt-10 text-base">
+          <Link to="/contacto" className="text-link">
+            Hablemos <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
+        </p>
+      </section>
     </>
   );
 }
