@@ -13,7 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CoachingRouteImport } from './routes/coaching'
 import { Route as ConoceTuDiamanteRouteImport } from './routes/conoce-tu-diamante'
 import { Route as ContactoRouteImport } from './routes/contacto'
-import { Route as PoesiaRouteImport } from './routes/poesia'
 import { Route as PublicacionesRouteImport } from './routes/publicaciones'
 import { Route as SobreMiRouteImport } from './routes/sobre-mi'
 
@@ -37,11 +36,6 @@ const ContactoRoute = ContactoRouteImport.update({
   path: '/contacto',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PoesiaRoute = PoesiaRouteImport.update({
-  id: '/poesia',
-  path: '/poesia',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PublicacionesRoute = PublicacionesRouteImport.update({
   id: '/publicaciones',
   path: '/publicaciones',
@@ -58,7 +52,6 @@ export interface FileRoutesByFullPath {
   '/coaching': typeof CoachingRoute
   '/conoce-tu-diamante': typeof ConoceTuDiamanteRoute
   '/contacto': typeof ContactoRoute
-  '/poesia': typeof PoesiaRoute
   '/publicaciones': typeof PublicacionesRoute
   '/sobre-mi': typeof SobreMiRoute
 }
@@ -67,7 +60,6 @@ export interface FileRoutesByTo {
   '/coaching': typeof CoachingRoute
   '/conoce-tu-diamante': typeof ConoceTuDiamanteRoute
   '/contacto': typeof ContactoRoute
-  '/poesia': typeof PoesiaRoute
   '/publicaciones': typeof PublicacionesRoute
   '/sobre-mi': typeof SobreMiRoute
 }
@@ -77,7 +69,6 @@ export interface FileRoutesById {
   '/coaching': typeof CoachingRoute
   '/conoce-tu-diamante': typeof ConoceTuDiamanteRoute
   '/contacto': typeof ContactoRoute
-  '/poesia': typeof PoesiaRoute
   '/publicaciones': typeof PublicacionesRoute
   '/sobre-mi': typeof SobreMiRoute
 }
@@ -88,7 +79,6 @@ export interface FileRouteTypes {
     | '/coaching'
     | '/conoce-tu-diamante'
     | '/contacto'
-    | '/poesia'
     | '/publicaciones'
     | '/sobre-mi'
   fileRoutesByTo: FileRoutesByTo
@@ -97,7 +87,6 @@ export interface FileRouteTypes {
     | '/coaching'
     | '/conoce-tu-diamante'
     | '/contacto'
-    | '/poesia'
     | '/publicaciones'
     | '/sobre-mi'
   id:
@@ -106,7 +95,6 @@ export interface FileRouteTypes {
     | '/coaching'
     | '/conoce-tu-diamante'
     | '/contacto'
-    | '/poesia'
     | '/publicaciones'
     | '/sobre-mi'
   fileRoutesById: FileRoutesById
@@ -116,7 +104,6 @@ export interface RootRouteChildren {
   CoachingRoute: typeof CoachingRoute
   ConoceTuDiamanteRoute: typeof ConoceTuDiamanteRoute
   ContactoRoute: typeof ContactoRoute
-  PoesiaRoute: typeof PoesiaRoute
   PublicacionesRoute: typeof PublicacionesRoute
   SobreMiRoute: typeof SobreMiRoute
 }
@@ -151,13 +138,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/poesia': {
-      id: '/poesia'
-      path: '/poesia'
-      fullPath: '/poesia'
-      preLoaderRoute: typeof PoesiaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/publicaciones': {
       id: '/publicaciones'
       path: '/publicaciones'
@@ -180,7 +160,6 @@ const rootRouteChildren: RootRouteChildren = {
   CoachingRoute: CoachingRoute,
   ConoceTuDiamanteRoute: ConoceTuDiamanteRoute,
   ContactoRoute: ContactoRoute,
-  PoesiaRoute: PoesiaRoute,
   PublicacionesRoute: PublicacionesRoute,
   SobreMiRoute: SobreMiRoute,
 }
