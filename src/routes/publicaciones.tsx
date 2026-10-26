@@ -78,7 +78,10 @@ function Publicaciones() {
                   ))}
                 </ul>
               ) : (
-                <Pending label="Dónde adquirirlo" />
+                <div>
+                  <p className="eyebrow">Dónde adquirir el libro</p>
+                  <p className="mt-3 font-serif text-xl">Próximamente</p>
+                </div>
               )}
             </div>
           </div>
