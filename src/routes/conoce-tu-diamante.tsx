@@ -89,7 +89,7 @@ function ConoceTuDiamante() {
           camino. Descubre tus dones.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-          <ReservaButton className="px-8 py-4 text-base" />
+          <ReservaButton />
           <p className="font-serif text-xl leading-snug text-foreground/85">
             Sesión individual online · 60 minutos · 38 €
           </p>
@@ -235,8 +235,8 @@ function ConoceTuDiamante() {
               <p className="mt-3 font-serif text-3xl leading-none sm:text-4xl">60 min</p>
             </div>
           </div>
-          <ReservaButton className="mt-8 w-full justify-center px-8 py-4 text-base" />
-          <p className="mt-5 text-center text-sm leading-relaxed text-muted-foreground">
+          <ReservaButton className="mt-8 w-full" />
+          <p className="mt-5 text-center text-base leading-relaxed text-muted-foreground">
             Sesión individual online · Indícame tu fecha de nacimiento al reservar
           </p>
         </div>
