@@ -13,9 +13,23 @@ export type Poem = {
   /** slug of a publication in src/content/publications.ts */
   publication?: string;
   provisionalTitle?: boolean;
+  /** date supplied by the author, e.g. "7 de mayo de 2023" */
+  writtenOn?: string;
 };
 
 export const poems: Poem[] = [
+  {
+    slug: "atrevete-a-brillar",
+    title: "Atrévete a brillar",
+    writtenOn: "7 de mayo de 2023",
+    text: "Hay tanto brillo dentro de ti al que no le permites salir\nA veces siento que crees que no tienes derecho siquiera\nni a estar aquí…\n\nNo sé si es algo heredado o que alguien te haya podido enseñar,\npero sé que tú eres estrella nacida para iluminar.\n\nAsí es que mira a la cara a todas tus culpas, tus miedos,\nperdónate por aquello que sea\ny ¡¡¡atrévete a brillar!!!\n\nNo temas por otros,\nno vas a eclipsar,\nmás bien al contrario,\nlos podrás inspirar y así ellos también brillarán\npues también son estrellas nacidas para iluminar.",
+  },
+  {
+    slug: "quise-ser",
+    title: "Quise ser…",
+    provisionalTitle: true,
+    text: "Quise ser organizada,\nquise ser mejor persona,\nquise ser considerada\nquise ser útil, ser vista, ser reconocida...\nQuise ser...\nPero en ese querer ser, quedó por completo olvidado mi ser\n¿Qué quería él?\nQuizás que me dejara tranquila\nQuizás que no intentara frenar ni dirigir el caos de mi vida\nQuizás tan solo ser libre\nQuizás simplemente dejar de querer\nQuizás solo SER",
+  },
   {
     slug: "circulo-de-mujeres",
     title: "Círculo de mujeres",
@@ -39,15 +53,6 @@ export const poems: Poem[] = [
     title: "Desaprendiendo",
     publication: "cuentos-y-poesia",
     text: "Te enseñaron a ser la niña buena,\nsiempre correcta,\ncasi nunca sincera,\na respetar las reglas,\na tragarte los gritos desgarrados y las quejas,\na meter tu corazón en una botella…\nPero afortunadamente hay en ti una parte salvaje\npor la que el alma se escapa\ny ríe a carcajadas\ny baila descalza y se desnuda y grita\ny se emborracha en una mirada.\nY a veces, aunque sea solo a veces,\ndeja que caigan\ntodas las máscaras.",
-  },
-  {
-    slug: "atrevete-a-brillar",
-    title: "Atrévete a brillar",
-  },
-  {
-    slug: "quise-ser",
-    title: "Quise ser…",
-    provisionalTitle: true,
   },
 ];
 
