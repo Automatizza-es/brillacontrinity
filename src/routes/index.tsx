@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import escritura from "@/assets/escritura.jpg";
+import heroLuz from "@/assets/hero-luz.jpg";
+import areaDiamante from "@/assets/area-diamante.jpg";
+import areaCoaching from "@/assets/area-coaching.jpg";
+import areaPoesia from "@/assets/area-poesia.jpg";
 import { pageMeta } from "@/lib/seo";
 import { Signature } from "@/components/site/Signature";
 import { publications } from "@/content/publications";
@@ -18,23 +21,29 @@ const paths = [
   {
     n: "01",
     title: "Conoce tu Diamante",
-    text: "Una mirada a tu mundo interior a través de la numerología. Una sesión individual para explorar tus dones, tus desafíos y diferentes aspectos de tu personalidad.",
-    cta: "Descubrir la sesión",
+    text: "Descubre tu esencia, tus dones y tu camino a través de la numerología.",
+    cta: "Conocer la sesión",
     to: "/conoce-tu-diamante" as const,
+    img: areaDiamante,
+    alt: "Luz atravesando un cristal sobre papel claro",
   },
   {
     n: "02",
     title: "Coaching",
-    text: "Un espacio de escucha y acompañamiento para reconocer lo que necesitas, cuestionar aquello que te limita y avanzar desde lo que eres.",
-    cta: "Conocer el acompañamiento",
+    text: "Un espacio para escucharte, cuestionar lo que te limita y avanzar desde lo que eres.",
+    cta: "Descubrir el acompañamiento",
     to: "/coaching" as const,
+    img: areaCoaching,
+    alt: "Estancia luminosa con un arco y luz de mañana",
   },
   {
     n: "03",
     title: "Poesía",
-    text: "Palabras nacidas de la experiencia, las emociones y la búsqueda de una vida más auténtica. Una manera de compartir lo que a veces cuesta expresar.",
-    cta: "Leer mis poemas",
+    text: "Palabras que nacen de la experiencia, las emociones y la libertad de ser.",
+    cta: "Leer mi poesía",
     to: "/poesia" as const,
+    img: areaPoesia,
+    alt: "Libro abierto junto a una hoja escrita a mano",
   },
 ];
 
@@ -43,42 +52,84 @@ function Index() {
   return (
     <>
       {/* Hero */}
-      <section className="mx-auto grid max-w-7xl gap-12 px-6 pb-20 pt-10 sm:px-10 md:grid-cols-12 md:gap-8 md:pt-16 lg:pb-32 lg:pt-24">
-        <div className="md:col-span-7 lg:col-span-7">
-          <p className="eyebrow fade-up">Autoconocimiento · Coaching · Poesía</p>
-          <h1 className="fade-up mt-8 text-[clamp(3.6rem,13vw,9.5rem)] leading-[0.92] tracking-[-0.02em]">
+      <section className="mx-auto grid max-w-7xl items-center gap-10 px-6 pb-12 pt-6 sm:px-10 md:grid-cols-12 md:gap-8 md:pb-14 md:pt-8">
+        <div className="md:col-span-6 lg:col-span-6">
+          <p className="eyebrow fade-up flex items-center gap-3">
+            <span className="h-px w-8 bg-mist" aria-hidden />
+            Autoconocimiento · Coaching · Poesía
+          </p>
+          <h1 className="fade-up mt-6 text-[clamp(3.4rem,9vw,7rem)] leading-[0.92] tracking-[-0.02em]">
             Atrévete
             <br />
-            <span className="pl-[0.6em] italic md:pl-[0.9em]">a brillar.</span>
+            <span className="italic">a brillar</span>
+            <span className="text-rose">.</span>
           </h1>
-          <p className="fade-up mt-10 max-w-md font-serif text-2xl leading-snug text-foreground/85 sm:text-[1.7rem]">
+          <p className="fade-up mt-6 max-w-md font-serif text-2xl leading-snug text-foreground/85">
             Un espacio para conocerte, aceptarte tal como eres y dar voz a tu propia luz.
           </p>
-          <div className="fade-up mt-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
-            <Link to="/conoce-tu-diamante" className="text-link text-foreground">
-              Conoce mis sesiones <ArrowRight className="h-4 w-4" aria-hidden />
+          <div className="fade-up mt-8 flex flex-wrap items-center gap-4">
+            <Link
+              to="/conoce-tu-diamante"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm tracking-wide text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              Conoce mis sesiones
             </Link>
-            <Link to="/poesia" className="text-link text-foreground">
-              Leer mi poesía <ArrowRight className="h-4 w-4" aria-hidden />
+            <Link
+              to="/poesia"
+              className="inline-flex items-center gap-2 rounded-full border border-foreground/30 px-6 py-3 text-sm tracking-wide transition-colors hover:border-mist hover:bg-mist-soft"
+            >
+              Leer mi poesía
             </Link>
           </div>
         </div>
-        <figure className="fade-up md:col-span-4 md:col-start-9 md:mt-28 lg:col-span-3 lg:col-start-10 lg:mt-40">
+        <figure className="fade-up relative md:col-span-6 lg:col-span-5 lg:col-start-8">
           <img
-            src={escritura}
-            alt="Cuaderno abierto con versos manuscritos y una pluma, a la luz de una ventana"
-            width={800}
-            height={1040}
-            className="aspect-[4/5] w-2/3 max-w-xs object-cover sm:w-1/2 md:w-full"
+            src={heroLuz}
+            alt="Luz de mañana sobre una mesa con un libro y una espiga en un vaso"
+            width={1024}
+            height={1152}
+            className="aspect-[4/3] w-full object-cover md:aspect-[5/4]"
           />
-          <figcaption className="mt-4 font-serif text-lg italic text-muted-foreground">
-            Escribir para escucharse.
+          <figcaption className="absolute bottom-0 left-0 bg-background/90 px-5 py-4 font-serif text-lg italic leading-snug">
+            Hay una luz en ti
+            <br />
+            que también es palabra.
+            <span className="mt-3 block h-px w-8 bg-rose" aria-hidden />
           </figcaption>
         </figure>
       </section>
 
+      {/* Tres caminos */}
+      <section aria-label="Tres caminos" className="mx-auto max-w-7xl border-t border-border px-6 sm:px-10">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 md:divide-x md:divide-border">
+          {paths.map((p, i) => (
+            <article
+              key={p.n}
+              className={`flex flex-col py-10 md:px-8 lg:px-10 ${i > 0 ? "border-t border-border sm:border-t-0" : ""} ${i === 2 ? "sm:col-span-2 sm:border-t md:col-span-1 md:border-t-0" : ""} sm:px-4 md:first:pl-0 md:last:pr-0`}
+            >
+              <img
+                src={p.img}
+                alt={p.alt}
+                width={992}
+                height={672}
+                loading="lazy"
+                className="aspect-[16/9] w-full object-cover"
+              />
+              <div className="mt-6 flex items-baseline gap-4">
+                <span className={`font-serif text-lg ${i === 1 ? "text-mist" : "text-rose"}`}>{p.n}</span>
+                <h2 className="text-3xl lg:text-[2.2rem]">{p.title}</h2>
+              </div>
+              <p className="mt-3 flex-1 leading-relaxed text-foreground/75">{p.text}</p>
+              <Link to={p.to} className="text-link mt-6 self-start">
+                {p.cta} <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
+            </article>
+          ))}
+        </div>
+      </section>
+
       {/* Presentación */}
-      <section className="mx-auto max-w-7xl border-t border-border px-6 py-20 sm:px-10 lg:py-32">
+      <section className="mx-auto max-w-7xl border-t border-border px-6 py-20 sm:px-10 lg:py-28">
         <div className="grid gap-10 md:grid-cols-12">
           <h2 className="text-4xl leading-tight sm:text-5xl md:col-span-5 lg:text-6xl">
             Conocerte.
@@ -101,25 +152,6 @@ function Index() {
               acompañamiento personal y la poesía.
             </p>
           </div>
-        </div>
-      </section>
-
-      {/* Tres caminos */}
-      <section aria-label="Tres caminos" className="mx-auto max-w-7xl border-t border-border px-6 sm:px-10">
-        <div className="grid md:grid-cols-3 md:divide-x md:divide-border">
-          {paths.map((p, i) => (
-            <article
-              key={p.n}
-              className={`flex flex-col py-14 md:px-8 md:py-20 lg:px-12 ${i > 0 ? "border-t border-border md:border-t-0" : ""} md:first:pl-0 md:last:pr-0`}
-            >
-              <span className="font-serif text-lg text-rose">{p.n}</span>
-              <h3 className="mt-4 text-3xl lg:text-4xl">{p.title}</h3>
-              <p className="mt-5 flex-1 leading-relaxed text-foreground/75">{p.text}</p>
-              <Link to={p.to} className="text-link mt-10 self-start">
-                {p.cta} <ArrowRight className="h-4 w-4" aria-hidden />
-              </Link>
-            </article>
-          ))}
         </div>
       </section>
 
