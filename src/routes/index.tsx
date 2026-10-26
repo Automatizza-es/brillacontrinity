@@ -1,9 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import heroLuz from "@/assets/hero-luz.jpg";
-import areaDiamante from "@/assets/area-diamante.jpg";
-import areaCoaching from "@/assets/area-coaching.jpg";
-import areaPoesia from "@/assets/area-poesia.jpg";
+import heroBotanico from "@/assets/hero-botanico.jpg";
 import { pageMeta } from "@/lib/seo";
 import { Signature } from "@/components/site/Signature";
 import { publications } from "@/content/publications";
@@ -19,31 +16,22 @@ export const Route = createFileRoute("/")({
 
 const paths = [
   {
-    n: "01",
     title: "Conoce tu Diamante",
     text: "Descubre tu esencia, tus dones y tu camino a través de la numerología.",
-    cta: "Conocer la sesión",
+    cta: "Saber más",
     to: "/conoce-tu-diamante" as const,
-    img: areaDiamante,
-    alt: "Luz atravesando un cristal sobre papel claro",
   },
   {
-    n: "02",
     title: "Coaching",
-    text: "Un espacio para escucharte, cuestionar lo que te limita y avanzar desde lo que eres.",
-    cta: "Descubrir el acompañamiento",
+    text: "Un acompañamiento para escucharte, liberarte de lo que te limita y avanzar desde ti.",
+    cta: "Saber más",
     to: "/coaching" as const,
-    img: areaCoaching,
-    alt: "Estancia luminosa con un arco y luz de mañana",
   },
   {
-    n: "03",
     title: "Poesía",
-    text: "Palabras que nacen de la experiencia, las emociones y la libertad de ser.",
+    text: "Palabras que nacen de la vida, la búsqueda, la aceptación y la libertad de ser.",
     cta: "Leer mi poesía",
     to: "/poesia" as const,
-    img: areaPoesia,
-    alt: "Libro abierto junto a una hoja escrita a mano",
   },
 ];
 
@@ -52,64 +40,70 @@ function Index() {
   return (
     <>
       {/* Hero */}
-      <section className="relative mx-auto max-w-7xl overflow-hidden px-6 pb-10 pt-4 sm:px-10 md:pb-14 md:pt-8">
+      <section className="relative overflow-hidden">
         <img
-          src={heroLuz}
+          src={heroBotanico}
           alt=""
           aria-hidden
-          width={1024}
-          height={1152}
-          className="hero-fade pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[34%] object-cover object-[60%_50%] opacity-45 saturate-50 md:block"
+          width={1280}
+          height={960}
+          className="hero-fade pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[58%] object-cover object-[80%_50%] md:block"
         />
-        <div className="relative z-10 max-w-2xl">
-          <p className="eyebrow fade-up flex items-center gap-3">
-            <span className="h-px w-8 bg-mist" aria-hidden />
-            Autoconocimiento · Coaching · Poesía
-          </p>
-          <h1 className="fade-up mt-6 text-[clamp(3.4rem,8vw,6.6rem)] leading-[0.92] tracking-[-0.02em]">
-            Atrévete
-            <br />
-            <span className="italic">a brillar</span>
-            <span className="text-rose">.</span>
-          </h1>
-          <p className="fade-up mt-6 max-w-md font-serif text-2xl leading-snug text-foreground/85">
-            Un espacio para conocerte, aceptarte tal como eres y dar voz a tu propia luz.
-          </p>
-          <div className="fade-up mt-8 flex flex-wrap items-center gap-4">
-            <Link
-              to="/conoce-tu-diamante"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm tracking-wide text-primary-foreground transition-opacity hover:opacity-90"
-            >
-              Conoce mis sesiones
-            </Link>
-            <Link
-              to="/poesia"
-              className="inline-flex items-center gap-2 rounded-full border border-foreground/30 px-6 py-3 text-sm tracking-wide transition-colors hover:border-mist hover:bg-mist-soft"
-            >
-              Leer mi poesía
-            </Link>
+        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-6 pb-12 pt-4 sm:px-10 md:grid-cols-12 md:pb-16 md:pt-10">
+          <div className="md:col-span-6">
+            <p className="eyebrow fade-up">Autoconocimiento · Coaching · Poesía</p>
+            <h1 className="fade-up mt-5 text-[clamp(3.6rem,8.5vw,7rem)] leading-[0.9] tracking-[-0.02em]">
+              Atrévete
+              <br />
+              a brillar<span className="text-rose">.</span>
+            </h1>
+            <p className="fade-up mt-6 max-w-md font-serif text-2xl leading-snug text-foreground/85">
+              Un espacio para conocerte, aceptarte tal como eres y dar voz a tu propia luz.
+            </p>
+            <div className="fade-up mt-8 flex flex-wrap items-center gap-4">
+              <Link
+                to="/conoce-tu-diamante"
+                className="inline-flex items-center rounded-full bg-primary px-7 py-3 text-sm tracking-wide text-primary-foreground transition-opacity hover:opacity-90"
+              >
+                Conoce mis sesiones
+              </Link>
+              <Link
+                to="/poesia"
+                className="inline-flex items-center rounded-full border border-foreground/40 px-7 py-3 text-sm tracking-wide transition-colors hover:bg-mist-soft"
+              >
+                Leer mi poesía
+              </Link>
+            </div>
           </div>
+          <blockquote className="fade-up hidden md:col-span-3 md:col-start-8 md:block">
+            <p className="font-serif text-xl italic leading-snug text-foreground/80">
+              Hay una luz en ti
+              <br />
+              que también es palabra.
+            </p>
+            <span className="mt-5 block h-px w-6 bg-mist" aria-hidden />
+          </blockquote>
         </div>
       </section>
 
       {/* Tres caminos */}
-      <section aria-label="Tres caminos" className="mx-auto max-w-7xl border-t border-border px-6 sm:px-10">
-        <div className="grid md:grid-cols-3 md:divide-x md:divide-border">
+      <section aria-label="Tres caminos" className="mx-auto max-w-7xl px-6 pb-16 sm:px-10">
+        <div className="grid md:grid-cols-3">
           {paths.map((p, i) => (
             <article
               key={p.title}
-              className={`flex flex-col py-10 md:px-8 md:py-12 lg:px-10 ${i > 0 ? "border-t border-border md:border-t-0" : ""} ${i === 0 ? "md:pl-0" : ""}`}
+              className={`flex flex-col py-8 md:px-10 md:py-2 ${i > 0 ? "border-t border-border md:border-l md:border-t-0" : "md:pl-0"}`}
             >
-              <span className={`h-px w-8 ${i === 1 ? "bg-mist" : "bg-rose"}`} aria-hidden />
-              <h2 className="mt-6 text-4xl lg:text-[2.6rem]">{p.title}</h2>
-              <p className="mt-4 flex-1 leading-relaxed text-foreground/75">{p.text}</p>
-              <Link to={p.to} className="text-link mt-8 self-start">
+              <h2 className="text-4xl">{p.title}</h2>
+              <p className="mt-3 flex-1 leading-relaxed text-foreground/75">{p.text}</p>
+              <Link to={p.to} className="text-link mt-6 self-start">
                 {p.cta} <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
             </article>
           ))}
         </div>
       </section>
+
 
       {/* Presentación */}
       <section className="mx-auto max-w-7xl border-t border-border px-6 py-20 sm:px-10 lg:py-28">
