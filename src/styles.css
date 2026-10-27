@@ -89,6 +89,10 @@
   color: var(--primary-foreground);
 }
 
+[data-palette="violet-preview"] .text-rose {
+  color: var(--signature-accent);
+}
+
 /* Existing accent text uses the stronger shade outside the palette preview. */
 @utility text-rose {
   color: var(--signature-accent, var(--water-dark));
