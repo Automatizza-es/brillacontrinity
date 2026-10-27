@@ -4,7 +4,6 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
-  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -89,10 +88,8 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const isPalettePreview = useRouterState({ select: (state) => state.location.pathname === "/sobre-mi" });
   return (
     <QueryClientProvider client={queryClient}>
-      <div data-palette={isPalettePreview ? "violet-preview" : undefined}>
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-card focus:px-4 focus:py-2">
         Saltar al contenido
       </a>
@@ -104,7 +101,6 @@ function RootComponent() {
         <SiteFooter />
       </div>
       <MobileTabBar />
-      </div>
     </QueryClientProvider>
   );
 }
