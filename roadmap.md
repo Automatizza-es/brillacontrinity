@@ -1,6 +1,5 @@
 # Roadmap
-- [x] Preview violet identity and turquoise accents on Sobre mí only.
-- [ ] Apply palette globally only after Trinity approves the Sobre mí preview (waiting on approval).
+- [x] Palette trial on Sobre mí closed: violet/turquoise combination not adopted, published turquoise palette kept.
 - [x] Visual system, header, footer, routes, full home page
 - [x] Responsive layout for mobile and tablet (keep editorial direction of home)
 - [ ] Real content: bio, photo, book cover, contact details, session info (waiting on Trinity)
