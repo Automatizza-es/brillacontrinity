@@ -39,34 +39,39 @@
 
 :root {
   --radius: 0.25rem;
-  /* #FAF9F7 */
-  --background: oklch(0.982 0.003 80);
-  /* #292530 */
-  --foreground: oklch(0.27 0.02 300);
-  --card: oklch(0.99 0.002 80);
-  --card-foreground: oklch(0.27 0.02 300);
-  --popover: oklch(0.99 0.002 80);
-  --popover-foreground: oklch(0.27 0.02 300);
-  /* #B989A0 deepened slightly for text contrast */
-  --primary: oklch(0.56 0.08 350);
-  --primary-foreground: oklch(0.99 0.002 80);
-  --rose: oklch(0.68 0.07 350);
-  --rose-soft: oklch(0.93 0.02 350);
-  /* #9AAEC5 */
-  --mist: oklch(0.73 0.04 250);
-  --mist-soft: oklch(0.95 0.012 250);
-  --secondary: oklch(0.955 0.005 80);
-  --secondary-foreground: oklch(0.27 0.02 300);
-  --muted: oklch(0.955 0.005 80);
-  /* #77747B */
-  --muted-foreground: oklch(0.53 0.01 300);
-  --accent: oklch(0.95 0.012 250);
-  --accent-foreground: oklch(0.27 0.02 300);
+  --water: #55A6AA;
+  --water-dark: #2C7078;
+  --water-soft: #E5F2F1;
+  --background: #FAF9F6;
+  --foreground: #292D30;
+  --card: #FFFFFF;
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
+  /* Dark turquoise keeps text and filled buttons accessible. */
+  --primary: var(--water-dark);
+  --primary-foreground: var(--background);
+  /* Compatibility aliases preserve all approved component styling. */
+  --rose: var(--water);
+  --rose-soft: var(--water-soft);
+  --mist: var(--water-dark);
+  --mist-soft: var(--water-soft);
+  --secondary: #F1F2F0;
+  --secondary-foreground: var(--foreground);
+  --muted: var(--secondary);
+  --muted-foreground: #656A6D;
+  --accent: var(--water-soft);
+  --accent-foreground: var(--foreground);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.9 0.006 300);
-  --input: oklch(0.88 0.006 300);
-  --ring: oklch(0.68 0.07 350);
+  --border: #DCDFDE;
+  --input: #CED4D3;
+  --ring: var(--water-dark);
+}
+
+/* Existing accent text uses the stronger shade without changing typography. */
+@utility text-rose {
+  color: var(--water-dark);
 }
 
 @layer base {
