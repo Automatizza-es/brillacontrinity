@@ -39,39 +39,33 @@
 
 :root {
   --radius: 0.25rem;
-  --water: #55A6AA;
-  --water-dark: #2C7078;
-  --water-soft: #E5F2F1;
-  --background: #FAF9F6;
-  --foreground: #292D30;
-  --card: #FFFFFF;
+  --background: oklch(98.2% 0.003 80);
+  --foreground: oklch(27% 0.02 300);
+  --card: oklch(99% 0.002 80);
   --card-foreground: var(--foreground);
   --popover: var(--card);
   --popover-foreground: var(--foreground);
-  /* Dark turquoise keeps text and filled buttons accessible. */
-  --primary: var(--water-dark);
-  --primary-foreground: var(--background);
-  /* Compatibility aliases preserve all approved component styling. */
-  --rose: var(--water);
-  --rose-soft: var(--water-soft);
-  --mist: var(--water-dark);
-  --mist-soft: var(--water-soft);
-  --secondary: #F1F2F0;
+  --primary: oklch(56% 0.08 350);
+  --primary-foreground: oklch(99% 0.002 80);
+  --rose: oklch(68% 0.07 350);
+  --rose-soft: oklch(93% 0.02 350);
+  --mist: oklch(73% 0.04 250);
+  --mist-soft: oklch(95% 0.012 250);
+  --secondary: oklch(95.5% 0.005 80);
   --secondary-foreground: var(--foreground);
   --muted: var(--secondary);
-  --muted-foreground: #656A6D;
-  --accent: var(--water-soft);
+  --muted-foreground: oklch(53% 0.01 300);
+  --accent: oklch(95% 0.012 250);
   --accent-foreground: var(--foreground);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: #DCDFDE;
-  --input: #CED4D3;
-  --ring: var(--water-dark);
+  --border: oklch(90% 0.006 300);
+  --input: oklch(88% 0.006 300);
+  --ring: oklch(68% 0.07 350);
 }
 
-/* Accent text uses the stronger water shade. */
 @utility text-rose {
-  color: var(--water-dark);
+  color: var(--rose);
 }
 
 @layer base {
