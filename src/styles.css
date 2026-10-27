@@ -69,7 +69,31 @@
   --ring: var(--water-dark);
 }
 
-/* Existing accent text uses the stronger shade without changing typography. */
+/* Route-scoped palette trial: other pages keep the approved turquoise theme. */
+[data-palette="violet-preview"] {
+  --identity-violet: #66527D;
+  --identity-violet-secondary: #7C6A91;
+  --primary: var(--identity-violet);
+  --primary-foreground: var(--background);
+  --ring: var(--identity-violet);
+  --rose: var(--identity-violet);
+  --rose-soft: var(--water-soft);
+  --mist: var(--identity-violet-secondary);
+  --mist-soft: var(--water-soft);
+  --signature-accent: var(--water);
+}
+
+[data-palette="violet-preview"] header a.bg-rose-soft,
+[data-palette="violet-preview"] .lg\:hidden a.bg-rose-soft {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+[data-palette="violet-preview"] .text-rose {
+  color: var(--signature-accent);
+}
+
+/* Existing accent text uses the stronger shade outside the palette preview. */
 @utility text-rose {
   color: var(--water-dark);
 }

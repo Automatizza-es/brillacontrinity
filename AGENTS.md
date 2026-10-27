@@ -11,4 +11,5 @@
 
 - Editable site content (poems, publications) lives in `src/content/*.ts` as typed data; pages render from it so texts can be added without touching layout.
 - Shared shell (header/footer) is in `__root.tsx`; per-page SEO via `pageMeta()` in `src/lib/seo.ts`.
+- Palette trials use a route-scoped data attribute on the shared shell and centralized CSS tokens so navigation cannot leak an unapproved theme to other pages.
 - Missing real content is shown with the `Pending` component, never invented filler.
