@@ -1,5 +1,5 @@
 # Roadmap
-- [x] Palette trial on Sobre mí closed: violet/turquoise combination not adopted, published turquoise palette kept.
+- [x] Palette trials closed: violet and turquoise combinations not adopted; published pink/lilac palette kept and restored in the project.
 - [x] Visual system, header, footer, routes, full home page
 - [x] Responsive layout for mobile and tablet (keep editorial direction of home)
 - [ ] Real content: bio, photo, book cover, contact details, session info (waiting on Trinity)
