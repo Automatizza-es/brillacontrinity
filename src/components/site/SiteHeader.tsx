@@ -65,7 +65,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="shrink-0 p-2 lg:hidden"
+          className="hidden"
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? "Cerrar menú" : "Abrir menú"}

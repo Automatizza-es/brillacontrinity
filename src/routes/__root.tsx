@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { MobileTabBar } from "@/components/site/MobileTabBar";
 
 function NotFoundComponent() {
   return (
@@ -96,7 +97,10 @@ function RootComponent() {
       <main id="main">
         <Outlet />
       </main>
-      <SiteFooter />
+      <div className="pb-[calc(4.5rem+env(safe-area-inset-bottom))] lg:pb-0">
+        <SiteFooter />
+      </div>
+      <MobileTabBar />
     </QueryClientProvider>
   );
 }
