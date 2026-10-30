@@ -3,7 +3,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { pageMeta } from "@/lib/seo";
 import { Section } from "@/components/site/PageIntro";
-import retrato from "@/assets/trinity-retrato.png.asset.json";
 
 export const Route = createFileRoute("/sobre-mi")({
   head: () =>
@@ -44,7 +43,7 @@ function SobreMi() {
           </div>
           <div className="fade-up md:col-span-5">
             <img
-              src={retrato.url}
+              src="/images/trinity-retrato.jpeg"
               alt="Retrato de Trinidad López, Trinity, sonriendo"
               width={1122}
               height={1402}
