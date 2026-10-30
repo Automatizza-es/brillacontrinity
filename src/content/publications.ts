@@ -1,5 +1,3 @@
-import cover from "@/assets/portada-cuentos-y-poesia.jpeg.asset.json";
-
 /**
  * Books and publications. Add a book by appending an entry.
  * `poemSlugs` link to entries in src/content/poems.ts (poems are never duplicated here).
@@ -29,7 +27,7 @@ export const publications: Publication[] = [
     year: 2026,
     kind: "Antología colectiva",
     role: "Autora participante: Trinidad López (Trinity)",
-    coverUrl: cover.url,
+    coverUrl: "/images/portada-cuentos-y-poesia.jpeg",
     poemSlugs: ["circulo-de-mujeres", "yo-soy-agua", "me-pierdo", "desaprendiendo"],
   },
 ];
