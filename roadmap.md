@@ -8,3 +8,4 @@
 - [x] Instagram reel 4 (vertical, water turquoise, ~15 s, words appearing progressively, CTA inside the reel)
 - [x] Instagram reel 8 (vertical, rose, ~15 s, words appearing progressively, CTA inside the reel)
 - [x] Instagram reel 12 (vertical, soft petroleum blue, ~15 s, words appearing progressively, CTA inside the reel and slightly larger than in reels 4 and 8)
+- [x] Instagram reel 17 (vertical, sage olive #687A59, 18 s, words appearing progressively, CTA inside the reel): «Dejar ir. / Decir que no. / Cambiar de opinión. / Pedir ayuda. / Volver a empezar. / También eso puede ser avanzar.» with the CTA «No existe una única forma de avanzar. En coaching podemos descubrir cuál tiene sentido para ti ahora.»
