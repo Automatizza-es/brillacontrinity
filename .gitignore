@@ -30,3 +30,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Credentials: only the placeholder example may be tracked.
+.env
+.env.*
+!.env.example
+supabase/.temp/
+supabase/.branches/
+.vercel/
