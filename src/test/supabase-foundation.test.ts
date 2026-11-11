@@ -1,28 +1,39 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { parseSupabaseConfig } from "@/lib/supabase/config";
+import { sessionCookieOptions } from "@/lib/supabase/cookie-options";
 
 const mocks = vi.hoisted(() => ({
   createServerClient: vi.fn(),
+  createBrowserClient: vi.fn(),
+  getRequestUrl: vi.fn(),
   getCookies: vi.fn(),
   setCookie: vi.fn(),
   setResponseHeader: vi.fn(),
 }));
 vi.mock("@tanstack/react-start", () => ({ createServerOnlyFn: (fn: unknown) => fn }));
-vi.mock("@supabase/ssr", () => ({ createServerClient: mocks.createServerClient }));
+vi.mock("@supabase/ssr", () => ({
+  createServerClient: mocks.createServerClient,
+  createBrowserClient: mocks.createBrowserClient,
+}));
 vi.mock("@tanstack/react-start/server", () => ({
   getCookies: mocks.getCookies,
+  getRequestUrl: mocks.getRequestUrl,
   setCookie: mocks.setCookie,
   setResponseHeader: mocks.setResponseHeader,
 }));
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import { getSupabaseServerClient, requirePoetryAdmin } from "@/lib/supabase/server";
 
 const testKey = "sb_publishable_synthetic_test_value_only";
 beforeEach(() => {
   vi.resetAllMocks();
+  mocks.getRequestUrl.mockReturnValue(new URL("https://preview.example/admin"));
   vi.stubEnv("VITE_SUPABASE_URL", "https://test.supabase.co");
   vi.stubEnv("VITE_SUPABASE_PUBLISHABLE_KEY", testKey);
   mocks.getCookies.mockReturnValue({ "session.0": "part-one", "session.1": "part-two" });
 });
+
+afterEach(() => vi.unstubAllEnvs());
 
 describe("Supabase configuration", () => {
   it("accepts a public key with HTTPS or local HTTP", () => {
@@ -69,7 +80,12 @@ describe("per-request SSR adapter", () => {
       { "Cache-Control": "private, no-store", Pragma: "no-cache", Expires: "0" },
     );
     expect(mocks.setCookie).toHaveBeenCalledTimes(2);
-    expect(mocks.setCookie).toHaveBeenCalledWith("session.1", "", { maxAge: 0 });
+    expect(mocks.setCookie).toHaveBeenCalledWith("session.1", "", {
+      maxAge: 0,
+      path: "/",
+      sameSite: "lax",
+      secure: true,
+    });
     expect(mocks.setResponseHeader).toHaveBeenCalledWith("Pragma", "no-cache");
     expect(mocks.setResponseHeader).toHaveBeenCalledWith("Expires", "0");
   });
@@ -105,5 +121,24 @@ describe("server authorization guard", () => {
     expect((await requirePoetryAdmin()).supabase).toBe(supabase);
     expect(supabase.auth.getUser).toHaveBeenCalledOnce();
     expect(eq).toHaveBeenCalledWith("user_id", "admin");
+  });
+});
+
+describe("browser cookie configuration", () => {
+  it.each([
+    ["https://preview.example/admin", true],
+    ["https://localhost/admin", true],
+    ["http://localhost:3000/admin", false],
+    ["http://127.0.0.1:3000/admin", false],
+    ["http://[::1]:3000/admin", false],
+    ["http://remote.example/admin", true],
+  ])("uses the page origin %s rather than the Supabase API origin", (url, secure) => {
+    expect(sessionCookieOptions(new URL(url)).secure).toBe(secure);
+  });
+  it("passes the current browser origin to the Supabase cookie adapter", () => {
+    // jsdom uses a local HTTP page, even when the configured API is HTTPS.
+    getSupabaseBrowserClient();
+    const options = mocks.createBrowserClient.mock.calls[0]![2];
+    expect(options.cookieOptions).toEqual(sessionCookieOptions(new URL(window.location.href)));
   });
 });

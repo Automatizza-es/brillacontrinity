@@ -1,5 +1,7 @@
 # Preparación de fase 1 — Brilla con Trinity
 
+> Registro de la preparación inicial. Las actualizaciones de dependencias, las pruebas ampliadas y el estado de auditoría vigente se documentan en [security-hardening.md](security-hardening.md).
+
 Rama local: `prep/phase-1-supabase`. Base: `85449a1`. Revisión: 11 de noviembre de 2026.
 
 ## Alcance y estado

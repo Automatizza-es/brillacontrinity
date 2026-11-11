@@ -1,7 +1,20 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { createServerClient } from "@supabase/ssr";
-import { getCookies, setCookie, setResponseHeader } from "@tanstack/react-start/server";
+import {
+  getCookies,
+  getRequestUrl,
+  setCookie,
+  setResponseHeader,
+} from "@tanstack/react-start/server";
 import { parseSupabaseConfig } from "./config";
+import { sessionCookieOptions } from "./cookie-options";
+import { SESSION_CACHE_HEADERS } from "./response-privacy";
+
+function preventSessionCaching() {
+  for (const [name, value] of Object.entries(SESSION_CACHE_HEADERS)) {
+    setResponseHeader(name, value);
+  }
+}
 
 /** Per-request client. Never cache a client carrying a user's cookies globally. */
 export const getSupabaseServerClient = createServerOnlyFn(() => {
@@ -10,15 +23,21 @@ export const getSupabaseServerClient = createServerOnlyFn(() => {
     process.env["VITE_SUPABASE_PUBLISHABLE_KEY"],
   );
   // Any response using a session must stay out of shared/CDN caches.
-  setResponseHeader("Cache-Control", "private, no-store");
+  preventSessionCaching();
+  const cookieOptions = sessionCookieOptions(getRequestUrl({ xForwardedHost: false }));
   return createServerClient(url, publishableKey, {
+    cookieOptions,
     cookies: {
       getAll() {
         return Object.entries(getCookies()).map(([name, value]) => ({ name, value }));
       },
       setAll(cookies, headers) {
-        cookies.forEach(({ name, value, options }) => setCookie(name, value, options));
+        cookies.forEach(({ name, value, options }) =>
+          setCookie(name, value, { ...options, ...cookieOptions }),
+        );
         Object.entries(headers).forEach(([name, value]) => setResponseHeader(name, value));
+        // Enforce privacy even if refresh headers or defaults change upstream.
+        preventSessionCaching();
       },
     },
   });
