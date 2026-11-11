@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { safeErrorDiagnostic } from "../lib/safe-error";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { MobileTabBar } from "@/components/site/MobileTabBar";
@@ -21,13 +22,15 @@ function NotFoundComponent() {
     <div className="mx-auto max-w-xl px-6 py-32 text-center">
       <p className="eyebrow">404</p>
       <h1 className="mt-4 text-5xl">Esta página no existe.</h1>
-      <Link to="/" className="text-link mt-10">Volver al inicio</Link>
+      <Link to="/" className="text-link mt-10">
+        Volver al inicio
+      </Link>
     </div>
   );
 }
 
 function ErrorComponent({ error, reset }: ErrorComponentProps) {
-  console.error(error);
+  console.error(safeErrorDiagnostic(error));
   const router = useRouter();
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
@@ -90,7 +93,10 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-card focus:px-4 focus:py-2">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-card focus:px-4 focus:py-2"
+      >
         Saltar al contenido
       </a>
       <SiteHeader />

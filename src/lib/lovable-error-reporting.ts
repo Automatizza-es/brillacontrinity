@@ -1,3 +1,5 @@
+import { safeErrorDiagnostic } from "./safe-error";
+
 type LovableErrorOptions = {
   mechanism?: "manual" | "onerror" | "unhandledrejection" | "react_error_boundary";
   handled?: boolean;
@@ -27,11 +29,13 @@ declare global {
 export function reportLovableError(error: unknown, context: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
   window.__lovableEvents?.captureException?.(
-    error,
+    new Error(safeErrorDiagnostic(error)),
     {
       source: "react_error_boundary",
-      route: window.location.pathname,
-      ...context,
+      boundary:
+        context["boundary"] === "tanstack_root_error_component"
+          ? "tanstack_root_error_component"
+          : "unknown",
     },
     {
       mechanism: "react_error_boundary",
@@ -42,29 +46,5 @@ export function reportLovableError(error: unknown, context: Record<string, unkno
   // Prod React does not rethrow boundary-caught errors to window.onerror, so the
   // editor's telemetry never sees them. Forward to lovable.js's reporting hook,
   // which is present only inside the editor preview.
-  const stack = error instanceof Error ? error.stack : undefined;
-  window.__lovableReportRuntimeError?.({
-    message: describeThrown(error),
-    ...(stack !== undefined && { stack }),
-    filename: window.location.pathname,
-  });
-}
-
-const MAX_SERIALIZED_LENGTH = 2000;
-
-// Loaders and server fns throw raw Responses and plain objects (a Supabase
-// `{ message, code, details }`), which String() reduces to "[object ...]".
-function describeThrown(error: unknown): string {
-  if (error instanceof Response) {
-    return `Response ${error.status}${error.url ? ` at ${error.url}` : ""}`;
-  }
-  if (error instanceof Error) return error.message;
-  if (typeof error === "string") return error;
-  const { message } = (error ?? {}) as { message?: unknown };
-  if (typeof message === "string" && message.length > 0) return message;
-  try {
-    return JSON.stringify(error)?.slice(0, MAX_SERIALIZED_LENGTH) ?? String(error);
-  } catch {
-    return String(error);
-  }
+  window.__lovableReportRuntimeError?.({ message: safeErrorDiagnostic(error) });
 }

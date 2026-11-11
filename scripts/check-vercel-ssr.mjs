@@ -1,7 +1,18 @@
 // Run after NITRO_PRESET=vercel npm run build. No network/deployment required.
 import handler from "../.vercel/output/functions/__server.func/index.mjs";
 
-for (const path of ["/", "/poesia", "/poesia/atrevete-a-brillar", "/publicaciones", "/contacto"]) {
+for (const path of [
+  "/",
+  "/poesia",
+  "/poesia/atrevete-a-brillar",
+  "/poesia/quise-ser",
+  "/poesia/circulo-de-mujeres",
+  "/poesia/yo-soy-agua",
+  "/poesia/me-pierdo",
+  "/poesia/desaprendiendo",
+  "/publicaciones",
+  "/contacto",
+]) {
   const response = await handler.fetch(new Request(`http://localhost${path}`), { waitUntil() {} });
   const html = await response.text();
   if (response.status !== 200 || !html.includes('<html lang="es"')) {
