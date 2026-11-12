@@ -76,3 +76,17 @@ test("network failures and unexpected JSON remain sanitized", async () => {
     "UNEXPECTED_RESPONSE",
   );
 });
+
+test("API endpoint URLs report the exact configuration problem without a request", async () => {
+  for (const path of ["/rest/v1", "/rest/v1/", "/auth/v1", "/storage/v1"]) {
+    let called = false;
+    const result = await checkConnection(config.replace(".co\n", `.co${path}\n`), () => {
+      called = true;
+      throw new Error(key);
+    });
+    assert.equal(result.code, "PROJECT_URL_NOT_ROOT");
+    assert.equal(called, false);
+    assert.ok(!resultMessage(result).includes(key));
+    assert.ok(resultMessage(result).includes("URL raíz"));
+  }
+});

@@ -17,12 +17,12 @@ export async function checkConnection(envText, fetchImpl = globalThis.fetch) {
       url.username ||
       url.password ||
       url.port ||
-      url.pathname !== "/" ||
       url.search ||
       url.hash
     ) {
       return { code: "CONFIGURATION_REQUIRED" };
     }
+    if (url.pathname !== "/") return { code: "PROJECT_URL_NOT_ROOT" };
   } catch {
     return { code: "CONFIGURATION_REQUIRED" };
   }
@@ -65,6 +65,8 @@ export function resultMessage(result) {
   const messages = {
     CONFIGURATION_REQUIRED:
       "Configuración pendiente: completa las dos variables de .env.local con Project URL y publishable key válidas. No se ha enviado ninguna petición.",
+    PROJECT_URL_NOT_ROOT:
+      "La variable VITE_SUPABASE_URL debe contener la URL raíz del proyecto, sin rutas de API. No se ha enviado ninguna petición.",
     KEY_REJECTED:
       "Auth ha rechazado la clave publicable. Revisa que ambos valores pertenezcan al mismo proyecto.",
     PROJECT_UNAVAILABLE:
