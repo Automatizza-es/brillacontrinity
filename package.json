@@ -14,7 +14,9 @@
     "test:watch": "vitest",
     "test:db:local": "node scripts/test-db-local.mjs",
     "check:supabase": "node scripts/check-supabase-connection.mjs",
-    "test:connection": "node --test scripts/check-supabase-connection.test.mjs"
+    "test:connection": "node --test scripts/check-supabase-connection.test.mjs",
+    "preflight:supabase": "node scripts/supabase-isolated-preflight.mjs",
+    "test:preflight": "node --test scripts/supabase-isolated-preflight.test.mjs"
   },
   "overrides": {
     "rolldown": "1.2.1"
