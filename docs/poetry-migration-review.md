@@ -1,90 +1,89 @@
 # Revisión previa a la migración de poesía
 
-Fecha: 14 de noviembre de 2026. Rama: `prep/phase-1-supabase`. Base revisada: `cf804d0`. Migración: `supabase/migrations/20261111000100_poetry_foundation.sql`.
+Revisión remota: 21 de noviembre de 2026. Rama: `prep/phase-1-supabase`.
 
-**Estado: NO ejecutada en remoto. Identidad y catálogo remotos pendientes de comprobar. No solicitar/aplicar la migración hasta resolver estas comprobaciones y recibir autorización expresa.**
+**Resultado: no se detectan conflictos de estructura o datos para la migración. No está aplicada ni autorizada su ejecución. Falta verificar la configuración de esquemas expuestos por Data API y preparar por separado el acceso de escritura autorizado.**
 
-## Evidencia disponible y bloqueo
+## Identidad y aislamiento
 
-La rama estaba limpia al comenzar. La migración no se ha modificado. Su SHA-256 es `3c26003a7e168e2e995f708337fd5bee9d3a95ced3f16cece9a62804de3a418d`.
+La propietaria ejecutó `npm run preflight:supabase` e introdujo un token exclusivo de lectura mediante entrada oculta. El proceso lo utilizó únicamente como SUPABASE_ACCESS_TOKEN en su propia memoria; no utilizó CLI, keychain, login ni otras sesiones.
 
-La CLI instalada es Supabase 2.116.0. Se consultó la lista de proyectos de la sesión actual y se compararon sus identificadores internamente con el origen de `.env.local`, sin mostrar los valores. La cuenta devuelve tres proyectos y **ninguno coincide con el nombre brilla-con-trinity ni con la referencia local**. Esto no demuestra que el proyecto no exista: demuestra que esta sesión no permite identificarlo. No hay un override de token o perfil en las variables de entorno del proceso.
+La consulta directa a la Management API verificó:
 
-La conexión pública de Auth validada anteriormente no acredita el nombre administrativo, región, plan, esquema existente ni permisos de mantenimiento. La publishable key no se usará para intentar obtener información privilegiada. Un error de tabla no expuesta en Data API tampoco demostraría que la tabla no existe, especialmente con exposición automática desactivada.
+- Nombre exacto: `brilla-con-trinity`.
+- Región: `eu-central-1`, Frankfurt.
+- Referencia: coincide exactamente con la obtenida del origen de Project URL en `.env.local`. Se ha repetido esa comparación al revisar el informe.
+- Informe generado el 21 de noviembre de 2026 a las 16:33 UTC.
 
-Se necesita una sesión CLI de la propietaria con acceso al proyecto correcto, o una sesión de dashboard autorizada para inspección. Iniciar `supabase login` personalmente con esa cuenta, sin usar `--token` en comandos ni compartir tokens o contraseñas por chat. Una vez disponible el acceso, repetir la identificación exacta de referencia, nombre, región Frankfurt (`eu-central-1`) y plan Free. No se ha cambiado la sesión ni se han solicitado credenciales en esta revisión.
+El informe completo está en `.supabase-preflight-report.local`, ignorado por Git y con permisos 0600. No contiene el token. No se ha copiado ese informe al repositorio. La comprobación de identidad por este endpoint no certifica el plan comercial; Free es el plan indicado por la propietaria.
 
-## Compatibilidad de la migración
+La antigua sesión global de CLI no se ha modificado. Quedan sustituidas las instrucciones anteriores de este documento que proponían `supabase login`: no utilizarlas para Trinity mientras pueda compartir estado con Claude Code.
 
-El SQL utiliza características estándar disponibles en PostgreSQL de Supabase: UUID, claves foráneas a `auth.users`, `auth.uid()`, roles `anon`/`authenticated`, RLS, índices parciales y triggers. No requiere extensiones adicionales, servicios de pago ni datos iniciales.
+## Inventario remoto observado
 
-La configuración indicada por la usuaria —Data API activa, exposición automática desactivada y RLS automático activo— es compatible con los GRANT/REVOKE y ENABLE ROW LEVEL SECURITY explícitos. Es una conclusión sobre el SQL y esa configuración declarada, **no una inspección del proyecto remoto todavía**.
+| Comprobación                                                                | Resultado                    |
+| --------------------------------------------------------------------------- | ---------------------------- |
+| PostgreSQL compatible                                                       | Sí                           |
+| Contrato `auth.users` y `auth.uid()`                                        | Existe                       |
+| `gen_random_uuid()`                                                         | Existe                       |
+| Roles `anon` y `authenticated`                                              | Existen                      |
+| `public.admin_users`                                                        | No existe                    |
+| `public.poems`                                                              | No existe                    |
+| `public.publications`                                                       | No existe                    |
+| Relaciones en public/private (tablas, vistas, secuencias y tablas externas) | Ninguna                      |
+| Esquema `private`                                                           | No existe                    |
+| Objetos y permisos previos en `private`                                     | Ninguno; esquema inexistente |
+| `supabase_migrations.schema_migrations`                                     | No existe                    |
+| Historial devuelto por API de migraciones                                   | Vacío                        |
 
-Debe aplicarla un rol de mantenimiento de confianza; la aplicación no debe recibir privilegios de propietario ni una clave service_role. La función SECURITY DEFINER debe quedar bajo ese propietario, con search_path vacío. `private` debe permanecer fuera de los esquemas expuestos por Data API.
+Se observaron los esquemas estándar gestionados de Supabase, incluidos Auth, Storage, Realtime y Vault. No se consultaron sus datos. Ninguno será eliminado ni reemplazado por el SQL preparado.
 
-La consulta de inventario se ha validado en PostgreSQL local desechable antes y después de aplicar la migración. La migración local y las 36 comprobaciones de permisos también pasan. No se ha ejecutado SQL en Supabase remoto.
+El inventario utilizó exclusivamente el endpoint oficial `/database/query/read-only` y el GET de historial de migraciones, después de verificar el proyecto. No hubo intentos mediante otros tokens, endpoints de escritura o sesiones alternativas.
 
-## Objetos que creará
+## Migración revisada
 
-| Objeto                 | Detalle                                                                                                                                                           |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Esquema `private`      | Se crea solo si no existe; se ajustan sus permisos.                                                                                                               |
-| `public.admin_users`   | Autorización por UUID de Auth, clave primaria y referencia a la identidad. Sin usuarios insertados.                                                               |
-| `public.publications`  | Metadatos editoriales, UUID, slug único y restricciones. Sin publicaciones insertadas.                                                                            |
-| `public.poems`         | Texto, título, fechas opcionales, estado, slug, orden y referencia editorial. Sin poemas insertados.                                                              |
-| Índices                | Dos explícitos: orden de publicados y referencia editorial; cinco índices automáticos de claves primarias/unicidad.                                               |
-| Funciones              | `private.is_admin()` y `private.protect_poem_metadata()`.                                                                                                         |
-| Trigger                | `protect_poem_metadata` en `poems`, para proteger slug y marcas internas.                                                                                         |
-| RLS                    | Activado explícitamente en las tres tablas.                                                                                                                       |
-| Políticas              | Siete: lectura de pertenencia propia, lectura editorial pública, lectura anónima de publicados, lectura autenticada y tres operaciones administrativas de poemas. |
-| Permisos y comentarios | GRANT/REVOKE explícitos y tres comentarios descriptivos.                                                                                                          |
+Archivo: `supabase/migrations/20261111000100_poetry_foundation.sql`.
 
-La CLI también mantiene el historial oficial `supabase_migrations.schema_migrations`, creándolo si no existe, y registra la versión aplicada. Es un objeto de control adicional al SQL de la aplicación.
+SHA-256: `3c26003a7e168e2e995f708337fd5bee9d3a95ced3f16cece9a62804de3a418d`.
 
-## Operaciones y precauciones
+El hash actual coincide con el del archivo local cuando se obtuvo el inventario remoto. No se ha modificado el SQL.
 
-No hay DROP, TRUNCATE, borrado de filas, modificación de contenidos existentes ni INSERT de poemas o usuarios. Todo el archivo está delimitado por BEGIN/COMMIT; si falla, la transacción de aplicación se revierte.
+Creará:
 
-La cláusula ON DELETE CASCADE de `admin_users` define el comportamiento futuro si se elimina una identidad de Auth; no elimina ninguna identidad o fila durante esta migración. La relación con publicaciones usa ON DELETE RESTRICT.
+- `private` y las tablas vacías `public.admin_users`, `public.poems`, `public.publications`.
+- Claves primarias, unicidad, restricciones y referencias a Auth/publicaciones; dos índices explícitos y cinco automáticos de claves/unicidad.
+- `private.is_admin()` y `private.protect_poem_metadata()`.
+- Un trigger de protección de metadatos/slug.
+- RLS en las tres tablas, siete políticas y permisos mínimos explícitos.
+- Tres comentarios de documentación.
 
-**Precaución pendiente:** `CREATE SCHEMA IF NOT EXISTS private` permite reutilizar un esquema existente, y a continuación `REVOKE ALL ON SCHEMA private FROM public, anon, authenticated` puede modificar accesos previos. Por eso no se puede confirmar todavía que no habrá impacto sobre otros usos. Si `private` ya existe, inspeccionar sus objetos, propietario y permisos; si tiene un uso previo, detenerse y revisar el alcance antes de autorizar. Las tablas y funciones se crean sin reemplazo, por lo que una colisión causa error en lugar de sobrescribir datos.
+El procedimiento de migración versionada también debe crear o mantener `supabase_migrations.schema_migrations` y registrar `20261111000100`. No basta ejecutar el SQL por una ruta que deje el historial sin registrar.
 
-## Comprobación de catálogo preparada
+No hay DROP, TRUNCATE, DELETE de filas ni modificación de contenido existente. No hay INSERT de cuentas, publicaciones o poemas. La cláusula ON DELETE CASCADE de `admin_users` solo define comportamiento futuro si se elimina una identidad de Auth; no elimina datos al aplicar la migración.
 
-`supabase/checks/poetry-preflight.sql` contiene únicamente una transacción READ ONLY con consultas a catálogos. No devuelve contenido de filas ni credenciales. Comprueba:
+La revocación de permisos de `private` ya no presenta el conflicto potencial identificado en la revisión anterior: el esquema no existe actualmente. Si el estado cambia antes de ejecutar, deberá repetirse el inventario. Las creaciones de tablas/funciones no llevan reemplazo; una colisión haría fallar la transacción en lugar de sobrescribir objetos.
 
-- Versión de PostgreSQL y contratos de Auth/UUID.
-- Roles previstos.
-- Existencia de las tres relaciones objetivo, incluidas posibles colisiones de nombres.
-- Existencia, propietario y permisos de los esquemas public/private.
-- Inventario de relaciones public/private y funciones de private.
-- Configuración pgrst.db_schemas cuando aparece en los ajustes de roles.
-- Existencia del historial de migraciones.
+## Qué falta antes de aplicar
 
-Si las tres tablas no existen, no puede haber datos en ellas que perder. Si alguna existe, no aplicar el archivo: revisar su esquema y realizar conteos exactos de solo lectura sin extraer datos personales. Una lista vacía de ajustes pgrst en el catálogo **no certifica** que private no esté expuesto; comprobar también Data API en el dashboard/Management API.
+1. **Exposición Data API:** confirmar en su configuración que `private` no está incluido en los esquemas expuestos. El catálogo inventariado no contiene esta configuración, y que el esquema aún no exista no prueba que esté excluido de una lista de exposición. No se han ampliado los permisos del token ni solicitado secretos JWT para comprobarlo. La propietaria puede verificar esa lista visualmente sin modificarla.
+2. **Autorización expresa:** presentar y aprobar la ejecución concreta de esta versión, una vez resuelto el punto anterior.
+3. **Credencial de escritura separada:** el token de lectura utilizado no permite aplicar la migración. Preparar una vía oficial versionada compatible con credenciales restringidas y autorización temporal suficiente, sin login global ni sustitución del token que utiliza Claude Code. No reutilizar sin más el procedimiento de la CLI global antigua ni actualizarla globalmente.
+4. **Revalidación inmediata:** repetir identidad, hash, conflictos e historial justo antes de escribir.
 
-## Procedimiento oficial preparado, todavía NO ejecutado
+## Verificación posterior prevista, todavía no realizada
 
-1. Autenticarse personalmente en la cuenta que tiene el proyecto y volver a listar proyectos. Comparar referencia exacta con `.env.local`, nombre, región y plan. Si no coinciden, detenerse.
-2. Revisar el inventario de solo lectura y el historial remoto existente. El comando disponible en esta CLI es `supabase db query --project-ref "$TRINITY_PROJECT_REF" --file supabase/checks/poetry-preflight.sql`; la variable solo se establecerá en la sesión después de verificar el destino. No incluir contraseñas en argumentos ni versionar credenciales.
-3. Confirmar que no hay colisiones ni uso previo de private. Si existe historial remoto, inspeccionarlo sin usar migration repair para ocultar diferencias.
-4. Preparar configuración local de CLI con `supabase init` solo si es necesaria; revisar el archivo generado y no incluir secretos, seeds ni roles adicionales. No hacer pull/reset del esquema remoto para resolver automáticamente diferencias.
-5. Presentar al usuario la identidad comprobada, inventario y plan final. Mantener la pausa antes de cualquier aplicación.
-6. Para la previsualización oficial, utilizar `supabase db push --project-ref "$TRINITY_PROJECT_REF" --skip-vault --dry-run`, con la identidad ya comprobada. Confirmar que únicamente aparece la versión `20261111000100`. No usar include-seed, include-roles, include-all, reset ni repair.
-7. **Solo después de la autorización expresa**, aplicar mediante el mismo `db push`, quitando únicamente `--dry-run`, manteniendo `--skip-vault` y la referencia verificada. La CLI gestionará el historial. No ejecutar únicamente el archivo a mano dejando el historial sin registrar.
-8. Verificar tablas, restricciones, propietarios, funciones, trigger, siete políticas y privilegios efectivos. Comprobar private fuera de Data API y ausencia de usuarios/contenidos creados.
-9. Repetir comprobaciones de acceso público y restringido. Como no se autoriza crear una administradora ni cuentas de prueba, no afirmar que se ha hecho un login remoto administrativo: distinguir pruebas SQL de roles dentro de una transacción reversible (solo si se autorizan fixtures) de pruebas Auth reales posteriores. Mantener las pruebas locales ya existentes como evidencia separada.
+Después de una futura ejecución autorizada, comprobar tablas, siete políticas RLS, privilegios efectivos, propietarios, funciones, trigger e historial registrado. Confirmar `private` fuera de Data API y ausencia de cuentas/contenidos creados. Repetir las pruebas de lectura pública y restringida diferenciando las pruebas locales de roles de futuros logins reales; no crear la administradora ni fixtures remotas sin autorización.
 
-La sesión que ejecute CLI necesita privilegios de mantenimiento, diferentes de la publishable key usada por la web. No hace falta añadir secretos privilegiados a `.env.local` ni a la aplicación.
+## Evidencia local
 
-## Punto de parada y siguientes pasos
+El comprobador aislado tiene 14 pruebas correctas: identidad, referencia, región, permisos, ausencia de fallback, entrada oculta, respuestas inesperadas y conflictos que obligan a revisión. El SELECT de inventario fue validado en PostgreSQL local desechable. TypeScript y ESLint de los archivos nuevos pasan.
 
-Se deja preparada la consulta de inventario y este informe. **No se ha confirmado aún la identidad remota ni la ausencia de tablas/datos, y no se ha realizado un dry-run remoto.** La siguiente acción requerida es dar acceso de lectura a la cuenta/proyecto correcto. Después se completará el inventario y se pedirá autorización para aplicar la migración; esta revisión no la sustituye.
+Las 36 comprobaciones locales de permisos de la migración ya habían pasado en la preparación anterior. Esto no significa que la migración se haya aplicado o probado sobre tablas reales en Supabase: aún no existen allí.
 
-No se han creado cuentas, migrado poemas, desarrollado `/admin`, cambiado Vercel o la web pública, hecho push ni fusionado main.
+No se han creado usuarios o tablas remotos, migrado poemas, desarrollado `/admin`, modificado Vercel o la web pública, hecho push ni fusionado main.
 
-Referencias oficiales consultadas:
+Referencias oficiales:
 
-- https://supabase.com/docs/guides/deployment/database-migrations
-- https://supabase.com/docs/reference/cli/supabase-db-push
-- https://supabase.com/docs/reference/api/v1-list-all-projects
+- https://supabase.com/docs/reference/api/v1-read-only-query
+- https://supabase.com/docs/reference/api/v1-list-migration-history
+- https://supabase.com/docs/guides/platform/personal-access-tokens
