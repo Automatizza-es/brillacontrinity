@@ -1,5 +1,7 @@
 # Revisión previa a la migración de poesía
 
+> Actualización: la propietaria ha confirmado que private no está expuesto y que la exposición automática está desactivada. El método propuesto con el nuevo token y su limitación de versiones se detallan en [poetry-migration-execution-plan.md](poetry-migration-execution-plan.md). Este inventario conserva la evidencia de la revisión anterior; no implica autorización de escritura.
+
 Revisión remota: 21 de noviembre de 2026. Rama: `prep/phase-1-supabase`.
 
 **Resultado: no se detectan conflictos de estructura o datos para la migración. No está aplicada ni autorizada su ejecución. Falta verificar la configuración de esquemas expuestos por Data API y preparar por separado el acceso de escritura autorizado.**

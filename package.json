@@ -16,7 +16,9 @@
     "check:supabase": "node scripts/check-supabase-connection.mjs",
     "test:connection": "node --test scripts/check-supabase-connection.test.mjs",
     "preflight:supabase": "node scripts/supabase-isolated-preflight.mjs",
-    "test:preflight": "node --test scripts/supabase-isolated-preflight.test.mjs"
+    "test:preflight": "node --test scripts/supabase-isolated-preflight.test.mjs",
+    "plan:poetry-migration": "node scripts/poetry-migration-plan.mjs",
+    "test:migration-plan": "node --test scripts/poetry-migration-plan.test.mjs"
   },
   "overrides": {
     "rolldown": "1.2.1"
