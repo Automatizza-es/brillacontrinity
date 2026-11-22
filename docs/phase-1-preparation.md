@@ -12,7 +12,7 @@ Fases acordadas: gestor de poemas; formulario seguro sin dependencia de Resend; 
 
 ## Base de datos
 
-`supabase/migrations/20261111000100_poetry_foundation.sql` crea las tres tablas dentro de una transacción, sin datos iniciales ni credenciales:
+`supabase/migrations/20261121175059_poetry_foundation.sql` crea las tres tablas dentro de una transacción, sin datos iniciales ni credenciales:
 
 - `admin_users`: autorización manual mediante UUID de `auth.users`; borrado en cascada si se elimina la identidad. Solo se puede consultar la propia pertenencia. Ningún rol de aplicación puede insertar, editar o eliminar autorizaciones.
 - `publications`: metadatos editoriales existentes, portada como URL, enlaces opcionales y slug único. Lectura pública. Sin escritura desde clientes en esta fase; no hay gestor editorial autorizado todavía.

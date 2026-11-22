@@ -49,3 +49,8 @@ union all select 'publications', count(*) from public.publications;
 
 -- Migration history must also be checked with the official GET migrations API.
 -- Database-role grants do not alone prove that a schema is excluded from Data API.
+
+select r.role_name,
+ pg_catalog.has_schema_privilege(r.role_name,'private','USAGE') as usage,
+ pg_catalog.has_schema_privilege(r.role_name,'private','CREATE') as create_objects
+from (values ('anon'),('authenticated')) r(role_name);

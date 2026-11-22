@@ -32,7 +32,10 @@ try {
   ]);
   let ready = false;
   for (let attempt = 0; attempt < 60; attempt++) {
-    if (docker(["exec", name, "pg_isready", "-U", "postgres"], undefined, true).status === 0) {
+    if (
+      docker(["exec", name, "pg_isready", "-h", "127.0.0.1", "-U", "postgres"], undefined, true)
+        .status === 0
+    ) {
       ready = true;
       break;
     }

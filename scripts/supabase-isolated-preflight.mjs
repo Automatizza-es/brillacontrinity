@@ -191,7 +191,7 @@ if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) 
     });
     delete process.env.SUPABASE_ACCESS_TOKEN;
     const migration = await readFile(
-      new URL("supabase/migrations/20261111000100_poetry_foundation.sql", root),
+      new URL("supabase/migrations/20261121175059_poetry_foundation.sql", root),
     );
     report.migrationSha256 = createHash("sha256").update(migration).digest("hex");
     await writeFile(reportFile, JSON.stringify(report, null, 2) + "\n", {

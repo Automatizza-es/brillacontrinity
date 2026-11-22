@@ -18,7 +18,10 @@
     "preflight:supabase": "node scripts/supabase-isolated-preflight.mjs",
     "test:preflight": "node --test scripts/supabase-isolated-preflight.test.mjs",
     "plan:poetry-migration": "node scripts/poetry-migration-plan.mjs",
-    "test:migration-plan": "node --test scripts/poetry-migration-plan.test.mjs"
+    "test:migration-plan": "node --test scripts/poetry-migration-plan.test.mjs",
+    "apply:poetry-migration": "node scripts/apply-poetry-migration.mjs",
+    "test:migration-apply": "node --test scripts/apply-poetry-migration.test.mjs",
+    "reconcile:poetry-migration": "node scripts/reconcile-poetry-migration.mjs"
   },
   "overrides": {
     "rolldown": "1.2.1"

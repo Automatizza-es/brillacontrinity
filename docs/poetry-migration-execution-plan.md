@@ -1,109 +1,46 @@
-# Plan de ejecución pendiente de autorización
+# Ejecución de poetry_foundation completada
 
-## Destino y SQL fijados
+## Destino y archivo definitivo
 
 - Rama: `prep/phase-1-supabase`.
 - Proyecto: `brilla-con-trinity`.
-- Referencia exacta: `gwckhuwespupovgweahj` (identificador público, no una credencial).
+- Referencia pública: `gwckhuwespupovgweahj`.
 - Región: Frankfurt, `eu-central-1`.
-- Archivo: `supabase/migrations/20261111000100_poetry_foundation.sql`.
+- Archivo: `supabase/migrations/20261121175059_poetry_foundation.sql`.
+- Versión registrada por Supabase: `20261121175059`.
 - SHA-256: `3c26003a7e168e2e995f708337fd5bee9d3a95ced3f16cece9a62804de3a418d`.
 
-El inventario remoto de lectura del 21 de noviembre confirmó ese destino y que no existen las tres tablas, private ni migraciones previas. El origen actual de `.env.local` sigue coincidiendo. No se ha hecho una nueva consulta remota en esta preparación: se repetirá el inventario inmediatamente antes de una futura escritura.
+La API oficial aplicó una sola vez el SQL autorizado el 21 de noviembre de 2026. El endpoint generó la versión remota; el archivo local se renombró el 22 de noviembre, conservando exactamente los mismos bytes. Git conserva la trazabilidad del nombre anterior. No se ha reparado ni modificado el historial remoto.
 
-La propietaria ha confirmado que private no está expuesto en Data API y que Automatically expose new tables está desactivado y guardado. Esa confirmación sustituye el pendiente visual anterior; no se solicitarán permisos adicionales para leer secretos de Data API.
+## Procedimiento utilizado y aislamiento
 
-## Método compatible con el token solicitado
+Se utilizó `POST /v1/projects/{ref}/database/migrations` con `name: poetry_foundation` y el SQL revisado. El PAT temporal se introdujo mediante entrada oculta y se utilizó únicamente en SUPABASE_ACCESS_TOKEN dentro del proceso. Sus permisos fueron Project Settings Read, Database Read y Migrations Read & Write. No se utilizó una contraseña PostgreSQL, secret key, login, link ni la sesión global de Supabase.
 
-Usar directamente la Management API oficial:
+El endpoint admite query/name/rollback, pero no una versión elegida por el cliente. Por eso se autorizó adoptar su versión generada en el nombre del archivo local. No se utilizó PUT de historial, migration repair ni una entrada inventada.
 
-```text
-POST https://api.supabase.com/v1/projects/gwckhuwespupovgweahj/database/migrations
-Authorization: Bearer <token introducido mediante entrada oculta>
-Content-Type: application/json
+El comando de aplicación conserva un registro local previo al intento y bloquea nuevas aplicaciones si existe ese registro. Además, su inventario previo exige que no existan tablas, esquema private ni migraciones: el proyecto ya aplicado no cumple esa condición. **No volver a ejecutar `apply:poetry-migration`.** Los informes locales están ignorados por Git y no contienen tokens.
 
-{"name":"poetry_foundation","query":"<SQL revisado, leído del archivo local>"}
-```
+## Objetos verificados
 
-Este endpoint exige el permiso fine-grained `database_migrations_write`, mostrado como Migrations Read-write. No exige Database Read-write para aplicar una migración. El permiso OAuth genérico `database:write` de la documentación no debe confundirse con los permisos de un PAT restringido.
+- Tablas vacías public.admin_users, public.poems y public.publications, con RLS en las tres.
+- Siete políticas; permisos efectivos mínimos de anon y authenticated.
+- Esquema private, dos funciones y un trigger de protección de metadatos/slug.
+- Claves, restricciones y dos índices explícitos, además de los índices automáticos.
+- Entrada poetry_foundation en el historial, con sentencias coincidentes con el SQL revisado.
 
-Permisos del nuevo PAT, exclusivamente para este proyecto:
+Ningún cliente tiene permisos de escritura en admin_users. Los visitantes solo pueden leer poemas publicados y publicaciones. Las operaciones de administración de poemas requieren pertenencia a admin_users; no existe todavía ninguna administradora. No se han migrado poemas ni publicaciones.
 
-- Project Settings Read: identidad.
-- Database Read: catálogo de solo lectura.
-- Migrations Read & Write: historial y aplicación.
+## Evidencia y cierre
 
-No usar contraseña PostgreSQL, service_role, CLI global, login, link, creación de roles temporales ni endpoint de SQL genérico. Una denegación de permisos detendrá el proceso: no habrá ampliación ni otra sesión automática.
+La reconciliación del 22 de noviembre a las 08:25:35 UTC verificó nuevamente identidad, versión, historial, catálogo, funciones, políticas y permisos mediante operaciones de lectura. Resultado: VERIFIED_READ_ONLY, sin incidencias; tablas vacías confirmadas por un lector con BYPASSRLS. La comprobación anterior de Data API rechazó private con PGRST106 y el acceso anónimo a admin_users con 42501.
 
-## Limitación de versión que requiere aprobación
+La alerta inicial del comprobador fue un problema de interpretación de name[] en la respuesta de la API. Se corrigió y se añadió una prueba con el formato real, sin modificar el SQL. El detalle está en [poetry-migration-reconciliation.md](poetry-migration-reconciliation.md).
 
-El endpoint admite `query`, `name` y `rollback`, pero **no un campo version**. Genera la marca temporal del historial en servidor. Poner la fecha local en `name` no garantiza que se registre la versión `20261111000100`. El endpoint PUT solo registra historial sin aplicar SQL, y PATCH modifica nombre/rollback, no ofrece cambiar la versión: no son sustitutos de una aplicación versionada coherente.
+Este cierre solo cambia archivos locales, ejecuta pruebas locales y registra un commit en la rama de preparación. No cambia Supabase remoto, Vercel, la web pública ni main. No crea la cuenta administradora ni desarrolla /admin.
 
-La propuesta compatible con estos permisos es:
+## Referencias oficiales del procedimiento utilizado
 
-1. Aplicar una sola vez el SQL revisado con el nombre `poetry_foundation`, únicamente tras autorización.
-2. Consultar el historial oficial antes y después, identificar exactamente una entrada nueva con ese nombre y obtener su versión real.
-3. Verificar el esquema y la entrada registrada. No asumir éxito solo por una respuesta HTTP.
-4. Renombrar localmente el archivo a `<version_remota>_poetry_foundation.sql`, manteniendo exactamente los mismos bytes y hash. Actualizar referencias de los scripts en el mismo commit local y repetir sus comprobaciones.
-5. Conservar la trazabilidad del nombre original y hash en el registro de ejecución y en Git. No dejar ambos archivos como migraciones pendientes. No reescribir commits, hacer migration repair ni inventar una entrada antigua.
-
-**Este cambio de nombre local forma parte de la autorización pendiente. No se ha renombrado ningún archivo.** Si es obligatorio conservar exactamente `20261111000100` también en remoto, este endpoint no cumple ese requisito y no debe ejecutarse. Habría que revisar otro procedimiento con el usuario, sin recurrir a contraseñas ni permisos no autorizados.
-
-El SQL contiene BEGIN/COMMIT propios. No se afirma que ese COMMIT y el registro añadido por la API sean una sola transacción atómica: debe comprobarse tanto esquema como historial. Si hay timeout, desconexión o un error ambiguo, no repetir el POST. Consultar el estado por lectura y detenerse para reconciliar el resultado. No añadir un rollback destructivo automático.
-
-## Entrada oculta y aislamiento
-
-Se reutilizará `promptHiddenToken` de `scripts/supabase-isolated-preflight.mjs`, ya probado. Solo acepta una Terminal interactiva, no imprime caracteres ni asteriscos y restaura el modo de terminal. El nuevo token se pedirá después de la autorización, no se necesita introducirlo ahora.
-
-El proceso eliminará cualquier token heredado de su propio entorno, pedirá el nuevo y lo asignará a `process.env.SUPABASE_ACCESS_TOKEN` únicamente en ese proceso. No se modificará el entorno padre, el llavero ni archivos globales. Se eliminará la variable al terminar. No se guardará en `.env.local`, comandos, reportes, logs o Git. No habrá sustitución por la publishable key o una sesión global si falla.
-
-## Objetos y operaciones revisados
-
-- Esquema private; tablas vacías admin_users, poems y publications.
-- Claves primarias/unicidad, claves foráneas y restricciones; dos índices explícitos y cinco automáticos.
-- Dos funciones en private y un trigger para proteger metadatos y slug.
-- RLS en las tres tablas, siete políticas, permisos mínimos y tres comentarios.
-- Historial de migraciones gestionado por el endpoint, comprobado después.
-
-No hay DROP, TRUNCATE, DELETE de datos ni INSERT de usuarios/poemas/publicaciones. La cláusula ON DELETE CASCADE establece un comportamiento futuro; no borra filas al aplicar el archivo. No se ha cambiado el SQL revisado.
-
-## Comprobaciones posteriores preparadas
-
-`supabase/checks/poetry-postmigration.sql` contiene solo SELECT para verificar:
-
-1. Las tres tablas y RLS activado.
-2. Las siete políticas y sus expresiones USING/WITH CHECK.
-3. Privilegios efectivos SELECT/INSERT/UPDATE/DELETE/TRUNCATE/REFERENCES/TRIGGER de anon y authenticated.
-4. SECURITY DEFINER, search_path, propietario y permisos EXECUTE de las dos funciones.
-5. Existencia y habilitación del trigger y las restricciones.
-6. Ausencia de datos iniciales, solo si el rol lector puede ver todas las filas pese a RLS. Si no tiene BYPASSRLS o acceso equivalente, contar cero no prueba que no haya datos; no presentarlo como comprobación concluyente.
-
-Resultado de permisos esperado:
-
-| Recurso      | anon                                 | authenticated                                         |
-| ------------ | ------------------------------------ | ----------------------------------------------------- |
-| poems        | SELECT limitado por RLS a publicados | SELECT y CRUD sujetos a las políticas administrativas |
-| publications | SELECT                               | SELECT                                                |
-| admin_users  | Sin acceso                           | Solo SELECT de su propia pertenencia                  |
-
-Ningún cliente puede escribir en admin_users, ni siquiera una administradora existente. No habrá una administradora todavía. Los GRANT no bastan por sí solos: revisar también las políticas y el helper de autorización.
-
-La versión real y el nombre se comprobarán mediante GET de migraciones. La exclusión de private y la exposición automática desactivada se conservarán, sin cambiar configuración remota. No se crearán usuarios ni fixtures remotas para estas verificaciones; las pruebas de permisos con fixtures siguen siendo locales. Los logins reales y las pruebas con borradores reales necesitarán una etapa posterior autorizada.
-
-## Preparación local y punto de parada
-
-- `npm run plan:poetry-migration`: verifica offline referencia y hash y muestra el plan. No pide token, no llama a ninguna API y no incluye modo apply.
-- `npm run test:migration-plan`: cuatro pruebas de destino, huella y parámetros seguros.
-- El procedimiento de entrada oculta sigue cubierto por las 14 pruebas del preflight.
-- El SQL de postverificación se valida solo en PostgreSQL local desechable antes de entregar el plan.
-
-No se ha implementado un comando ejecutable de escritura en esta etapa. Tras la aprobación concreta se preparará su ejecución controlada, con revalidación y sin cambiar silenciosamente la estrategia de versión. No se han modificado Supabase remoto, Vercel, la web pública ni la sesión de Claude Code.
-
-## Referencias oficiales
-
-- Aplicación y permiso: https://supabase.com/docs/reference/api/v1-apply-a-migration
-- Permisos de PAT: https://supabase.com/docs/guides/platform/personal-access-tokens
-- Historial: https://supabase.com/docs/reference/api/v1-list-migration-history
-- Upsert sin aplicar: https://supabase.com/docs/reference/api/v1-upsert-a-migration
-- Campos editables del historial: https://supabase.com/docs/reference/api/v1-patch-a-migration
-- Limitación de versiones reconocida en el repositorio oficial: https://github.com/supabase/mcp/issues/241
+- https://supabase.com/docs/reference/api/v1-apply-a-migration
+- https://supabase.com/docs/reference/api/v1-get-a-migration
+- https://supabase.com/docs/reference/api/v1-list-migration-history
+- https://supabase.com/docs/guides/platform/personal-access-tokens

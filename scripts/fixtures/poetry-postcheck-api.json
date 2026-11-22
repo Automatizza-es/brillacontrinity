@@ -1,0 +1,535 @@
+[
+  [
+    {
+      "schema_name": "public",
+      "table_name": "admin_users",
+      "rls_enabled": true,
+      "owner": "postgres"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "poems",
+      "rls_enabled": true,
+      "owner": "postgres"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "publications",
+      "rls_enabled": true,
+      "owner": "postgres"
+    }
+  ],
+  [
+    {
+      "schemaname": "public",
+      "tablename": "admin_users",
+      "policyname": "admin_reads_own_membership",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "qual": "(user_id = ( SELECT auth.uid() AS uid))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "poems",
+      "policyname": "admin_deletes_poems",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "DELETE",
+      "qual": "( SELECT private.is_admin() AS is_admin)",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "poems",
+      "policyname": "admin_inserts_poems",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "( SELECT private.is_admin() AS is_admin)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "poems",
+      "policyname": "admin_updates_poems",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "qual": "( SELECT private.is_admin() AS is_admin)",
+      "with_check": "( SELECT private.is_admin() AS is_admin)"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "poems",
+      "policyname": "authenticated_reads_poems",
+      "permissive": "PERMISSIVE",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "qual": "((status = 'published'::text) OR ( SELECT private.is_admin() AS is_admin))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "poems",
+      "policyname": "visitor_reads_published_poems",
+      "permissive": "PERMISSIVE",
+      "roles": "{anon}",
+      "cmd": "SELECT",
+      "qual": "(status = 'published'::text)",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "publications",
+      "policyname": "public_reads_publications",
+      "permissive": "PERMISSIVE",
+      "roles": "{anon,authenticated}",
+      "cmd": "SELECT",
+      "qual": "true",
+      "with_check": null
+    }
+  ],
+  [
+    {
+      "role_name": "anon",
+      "table_name": "admin_users",
+      "privilege": "DELETE",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "admin_users",
+      "privilege": "INSERT",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "admin_users",
+      "privilege": "REFERENCES",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "admin_users",
+      "privilege": "SELECT",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "admin_users",
+      "privilege": "TRIGGER",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "admin_users",
+      "privilege": "TRUNCATE",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "admin_users",
+      "privilege": "UPDATE",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "poems",
+      "privilege": "DELETE",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "poems",
+      "privilege": "INSERT",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "poems",
+      "privilege": "REFERENCES",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "poems",
+      "privilege": "SELECT",
+      "allowed": true
+    },
+    {
+      "role_name": "anon",
+      "table_name": "poems",
+      "privilege": "TRIGGER",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "poems",
+      "privilege": "TRUNCATE",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "poems",
+      "privilege": "UPDATE",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "publications",
+      "privilege": "DELETE",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "publications",
+      "privilege": "INSERT",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "publications",
+      "privilege": "REFERENCES",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "publications",
+      "privilege": "SELECT",
+      "allowed": true
+    },
+    {
+      "role_name": "anon",
+      "table_name": "publications",
+      "privilege": "TRIGGER",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "publications",
+      "privilege": "TRUNCATE",
+      "allowed": false
+    },
+    {
+      "role_name": "anon",
+      "table_name": "publications",
+      "privilege": "UPDATE",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "admin_users",
+      "privilege": "DELETE",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "admin_users",
+      "privilege": "INSERT",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "admin_users",
+      "privilege": "REFERENCES",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "admin_users",
+      "privilege": "SELECT",
+      "allowed": true
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "admin_users",
+      "privilege": "TRIGGER",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "admin_users",
+      "privilege": "TRUNCATE",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "admin_users",
+      "privilege": "UPDATE",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "poems",
+      "privilege": "DELETE",
+      "allowed": true
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "poems",
+      "privilege": "INSERT",
+      "allowed": true
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "poems",
+      "privilege": "REFERENCES",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "poems",
+      "privilege": "SELECT",
+      "allowed": true
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "poems",
+      "privilege": "TRIGGER",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "poems",
+      "privilege": "TRUNCATE",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "poems",
+      "privilege": "UPDATE",
+      "allowed": true
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "publications",
+      "privilege": "DELETE",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "publications",
+      "privilege": "INSERT",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "publications",
+      "privilege": "REFERENCES",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "publications",
+      "privilege": "SELECT",
+      "allowed": true
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "publications",
+      "privilege": "TRIGGER",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "publications",
+      "privilege": "TRUNCATE",
+      "allowed": false
+    },
+    {
+      "role_name": "authenticated",
+      "table_name": "publications",
+      "privilege": "UPDATE",
+      "allowed": false
+    }
+  ],
+  [
+    {
+      "schema_name": "private",
+      "function_name": "is_admin",
+      "security_definer": true,
+      "function_settings": ["search_path=\"\""],
+      "owner": "postgres",
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "schema_name": "private",
+      "function_name": "protect_poem_metadata",
+      "security_definer": false,
+      "function_settings": ["search_path=\"\""],
+      "owner": "postgres",
+      "anon_execute": false,
+      "authenticated_execute": false
+    }
+  ],
+  [
+    {
+      "trigger_name": "protect_poem_metadata",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER protect_poem_metadata BEFORE INSERT OR UPDATE ON public.poems FOR EACH ROW EXECUTE FUNCTION private.protect_poem_metadata()"
+    }
+  ],
+  [
+    {
+      "schema_name": "public",
+      "table_name": "admin_users",
+      "conname": "admin_users_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (user_id)"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "admin_users",
+      "conname": "admin_users_user_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "poems",
+      "conname": "poems_body_check",
+      "contype": "c",
+      "definition": "CHECK ((length(body) <= 200000))"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "poems",
+      "conname": "poems_description_check",
+      "contype": "c",
+      "definition": "CHECK ((length(description) <= 2000))"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "poems",
+      "conname": "poems_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "poems",
+      "conname": "poems_publication_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (publication_id) REFERENCES publications(id) ON DELETE RESTRICT"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "poems",
+      "conname": "poems_slug_check",
+      "contype": "c",
+      "definition": "CHECK (((slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$'::text) AND (length(slug) <= 160)))"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "poems",
+      "conname": "poems_slug_key",
+      "contype": "u",
+      "definition": "UNIQUE (slug)"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "poems",
+      "conname": "poems_status_check",
+      "contype": "c",
+      "definition": "CHECK ((status = ANY (ARRAY['draft'::text, 'published'::text])))"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "poems",
+      "conname": "poems_title_check",
+      "contype": "c",
+      "definition": "CHECK (((length(btrim(title)) >= 1) AND (length(btrim(title)) <= 300)))"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "poems",
+      "conname": "published_poems_have_text",
+      "contype": "c",
+      "definition": "CHECK (((status <> 'published'::text) OR (length(btrim(body)) > 0)))"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "publications",
+      "conname": "publications_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "publications",
+      "conname": "publications_publisher_check",
+      "contype": "c",
+      "definition": "CHECK (((length(btrim(publisher)) >= 1) AND (length(btrim(publisher)) <= 300)))"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "publications",
+      "conname": "publications_purchase_links_check",
+      "contype": "c",
+      "definition": "CHECK ((jsonb_typeof(purchase_links) = 'array'::text))"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "publications",
+      "conname": "publications_slug_check",
+      "contype": "c",
+      "definition": "CHECK (((slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$'::text) AND (length(slug) <= 160)))"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "publications",
+      "conname": "publications_slug_key",
+      "contype": "u",
+      "definition": "UNIQUE (slug)"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "publications",
+      "conname": "publications_title_check",
+      "contype": "c",
+      "definition": "CHECK (((length(btrim(title)) >= 1) AND (length(btrim(title)) <= 300)))"
+    },
+    {
+      "schema_name": "public",
+      "table_name": "publications",
+      "conname": "publications_year_check",
+      "contype": "c",
+      "definition": "CHECK (((year >= 1000) AND (year <= 9999)))"
+    }
+  ],
+  [
+    {
+      "reader": "supabase_read_only_user",
+      "reader_bypasses_rls": true
+    }
+  ],
+  [
+    {
+      "table_name": "admin_users",
+      "rows": 0
+    },
+    {
+      "table_name": "poems",
+      "rows": 0
+    },
+    {
+      "table_name": "publications",
+      "rows": 0
+    }
+  ],
+  [
+    {
+      "role_name": "anon",
+      "usage": false,
+      "create_objects": false
+    },
+    {
+      "role_name": "authenticated",
+      "usage": true,
+      "create_objects": false
+    }
+  ]
+]

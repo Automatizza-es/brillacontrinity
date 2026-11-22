@@ -1,4 +1,6 @@
-# Revisión previa a la migración de poesía
+# Revisión previa a la migración de poesía (archivo histórico)
+
+> Estado actual: migración aplicada y reconciliada, versión `20261121175059`. Véase [poetry-migration-reconciliation.md](poetry-migration-reconciliation.md). El resto de este documento conserva el inventario anterior a la ejecución. Las referencias de archivo apuntan al nombre definitivo.
 
 > Actualización: la propietaria ha confirmado que private no está expuesto y que la exposición automática está desactivada. El método propuesto con el nuevo token y su limitación de versiones se detallan en [poetry-migration-execution-plan.md](poetry-migration-execution-plan.md). Este inventario conserva la evidencia de la revisión anterior; no implica autorización de escritura.
 
@@ -44,7 +46,7 @@ El inventario utilizó exclusivamente el endpoint oficial `/database/query/read-
 
 ## Migración revisada
 
-Archivo: `supabase/migrations/20261111000100_poetry_foundation.sql`.
+Archivo: `supabase/migrations/20261121175059_poetry_foundation.sql`.
 
 SHA-256: `3c26003a7e168e2e995f708337fd5bee9d3a95ced3f16cece9a62804de3a418d`.
 
@@ -59,7 +61,7 @@ Creará:
 - RLS en las tres tablas, siete políticas y permisos mínimos explícitos.
 - Tres comentarios de documentación.
 
-El procedimiento de migración versionada también debe crear o mantener `supabase_migrations.schema_migrations` y registrar `20261111000100`. No basta ejecutar el SQL por una ruta que deje el historial sin registrar.
+El procedimiento de migración versionada también debe crear o mantener `supabase_migrations.schema_migrations` y registrar `20261121175059`. No basta ejecutar el SQL por una ruta que deje el historial sin registrar.
 
 No hay DROP, TRUNCATE, DELETE de filas ni modificación de contenido existente. No hay INSERT de cuentas, publicaciones o poemas. La cláusula ON DELETE CASCADE de `admin_users` solo define comportamiento futuro si se elimina una identidad de Auth; no elimina datos al aplicar la migración.
 

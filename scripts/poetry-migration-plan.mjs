@@ -30,8 +30,8 @@ export function buildPlan(projectUrl, sql) {
     throw new Error("MIGRATION_CHANGED");
   return {
     target: TARGET,
-    sourceFile: "supabase/migrations/20261111000100_poetry_foundation.sql",
-    sourceVersion: "20261111000100",
+    sourceFile: "supabase/migrations/20261121175059_poetry_foundation.sql",
+    sourceVersion: "20261121175059",
     sha256: MIGRATION_SHA256,
     method: "POST",
     endpoint: `https://api.supabase.com/v1/projects/${TARGET.reference}/database/migrations`,
@@ -49,7 +49,7 @@ if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) 
     const root = new URL("../", import.meta.url);
     const env = parseEnv(await readFile(new URL(".env.local", root), "utf8"));
     const sql = await readFile(
-      new URL("supabase/migrations/20261111000100_poetry_foundation.sql", root),
+      new URL("supabase/migrations/20261121175059_poetry_foundation.sql", root),
     );
     console.log(JSON.stringify(buildPlan(env.VITE_SUPABASE_URL, sql), null, 2));
     console.log(
