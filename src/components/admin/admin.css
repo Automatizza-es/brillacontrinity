@@ -1,0 +1,153 @@
+.admin-workspace {
+  --primary: oklch(46% 0.115 305);
+  --primary-foreground: oklch(99% 0.002 80);
+  --ring: oklch(62% 0.1 305);
+  --border: oklch(89% 0.016 305);
+  --admin-soft: oklch(96% 0.014 305);
+}
+.admin-workspace .admin-surface {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+}
+.admin-workspace .admin-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+.admin-workspace .admin-field {
+  width: 100%;
+  min-width: 0;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  background: var(--background);
+  color: var(--foreground);
+  font-weight: 300;
+}
+.admin-workspace .admin-field:focus-visible,
+.admin-workspace button:focus-visible,
+.admin-workspace summary:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.admin-workspace .admin-field[readonly] {
+  background: var(--secondary);
+  color: var(--muted-foreground);
+}
+.admin-workspace .admin-poem-input {
+  resize: vertical;
+  min-height: 24rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  line-height: 1.8;
+  tab-size: 4;
+}
+.admin-workspace .admin-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 2.75rem;
+  padding: 0.7rem 1.15rem;
+  border: 1px solid var(--primary);
+  border-radius: 0.25rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 0.85rem;
+  font-weight: 400;
+  transition: filter 150ms;
+}
+.admin-workspace .admin-button:hover {
+  filter: brightness(1.08);
+}
+.admin-workspace .admin-button-secondary {
+  background: transparent;
+  color: var(--primary);
+}
+.admin-workspace .admin-text-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 2.5rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--primary);
+}
+.admin-workspace button {
+  cursor: pointer;
+}
+.admin-workspace button:disabled,
+.admin-workspace fieldset:disabled {
+  opacity: 0.6;
+}
+.admin-workspace button:disabled {
+  cursor: wait;
+}
+.admin-workspace .admin-poem-row {
+  width: 100%;
+  padding: 1.3rem;
+  text-align: left;
+  overflow-wrap: anywhere;
+  border-left: 3px solid transparent;
+}
+.admin-workspace .admin-poem-row:hover,
+.admin-workspace .admin-poem-selected {
+  background: var(--admin-soft);
+  border-left-color: var(--primary);
+}
+.admin-workspace .admin-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2rem;
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.035em;
+  color: var(--muted-foreground);
+  background: var(--secondary);
+}
+.admin-workspace .admin-badge-published {
+  color: var(--primary);
+  background: var(--admin-soft);
+  border-color: var(--ring);
+}
+.admin-workspace .admin-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3.3rem;
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+  border-bottom: 2px solid transparent;
+}
+.admin-workspace .admin-tab[aria-selected="true"] {
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 400;
+}
+.admin-workspace .admin-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  padding: 1rem 1.1rem;
+  background: var(--admin-soft);
+  font-size: 0.9rem;
+}
+.admin-workspace .admin-notice svg {
+  flex-shrink: 0;
+}
+.admin-workspace .admin-notice-error {
+  border-left-color: var(--destructive);
+  background: var(--card);
+}
+.admin-workspace .admin-confirm {
+  border: 1px solid var(--border);
+  background: var(--admin-soft);
+}
