@@ -1,14 +1,12 @@
 .admin-workspace {
-  --primary: oklch(46% 0.115 305);
-  --primary-foreground: oklch(99% 0.002 80);
-  --ring: oklch(62% 0.1 305);
-  --border: oklch(89% 0.016 305);
-  --admin-soft: oklch(96% 0.014 305);
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
 }
 .admin-workspace .admin-surface {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 0.4rem;
+  border-radius: var(--radius);
 }
 .admin-workspace .admin-label {
   display: flex;
@@ -22,15 +20,15 @@
   min-width: 0;
   padding: 0.75rem 0.85rem;
   border: 1px solid var(--border);
-  border-radius: 0.25rem;
+  border-radius: var(--radius);
   background: var(--background);
   color: var(--foreground);
-  font-weight: 300;
+  font-weight: 400;
 }
 .admin-workspace .admin-field:focus-visible,
 .admin-workspace button:focus-visible,
 .admin-workspace summary:focus-visible {
-  outline: 2px solid var(--ring);
+  outline: 2px solid var(--primary);
   outline-offset: 3px;
 }
 .admin-workspace .admin-field[readonly] {
@@ -53,7 +51,7 @@
   min-height: 2.75rem;
   padding: 0.7rem 1.15rem;
   border: 1px solid var(--primary);
-  border-radius: 0.25rem;
+  border-radius: var(--radius);
   background: var(--primary);
   color: var(--primary-foreground);
   font-size: 0.85rem;
@@ -61,7 +59,7 @@
   transition: filter 150ms;
 }
 .admin-workspace .admin-button:hover {
-  filter: brightness(1.08);
+  filter: brightness(0.95);
 }
 .admin-workspace .admin-button-secondary {
   background: transparent;
@@ -96,7 +94,7 @@
 }
 .admin-workspace .admin-poem-row:hover,
 .admin-workspace .admin-poem-selected {
-  background: var(--admin-soft);
+  background: var(--secondary);
   border-left-color: var(--primary);
 }
 .admin-workspace .admin-badge {
@@ -113,8 +111,8 @@
 }
 .admin-workspace .admin-badge-published {
   color: var(--primary);
-  background: var(--admin-soft);
-  border-color: var(--ring);
+  background: var(--card);
+  border-color: var(--border);
 }
 .admin-workspace .admin-tab {
   display: flex;
@@ -137,7 +135,7 @@
   border: 1px solid var(--border);
   border-left: 3px solid var(--primary);
   padding: 1rem 1.1rem;
-  background: var(--admin-soft);
+  background: var(--secondary);
   font-size: 0.9rem;
 }
 .admin-workspace .admin-notice svg {
@@ -149,5 +147,25 @@
 }
 .admin-workspace .admin-confirm {
   border: 1px solid var(--border);
-  background: var(--admin-soft);
+  background: var(--secondary);
+}
+
+/* Comfortable controls and reading on the same warm, light site surfaces. */
+@media (max-width: 639px) {
+  .admin-workspace .admin-field {
+    font-size: 1rem;
+    min-height: 2.75rem;
+  }
+  .admin-workspace .admin-poem-input {
+    font-size: 1.25rem;
+    min-height: 20rem;
+  }
+  .admin-workspace .admin-button,
+  .admin-workspace .admin-text-button,
+  .admin-workspace .admin-tab {
+    min-height: 2.75rem;
+  }
+  .admin-workspace .admin-notice {
+    overflow-wrap: anywhere;
+  }
 }

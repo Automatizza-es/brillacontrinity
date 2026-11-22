@@ -1,14 +1,16 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { pageMeta } from "@/lib/seo";
-import { getPoem } from "@/content/poems";
-import { getPublication } from "@/content/publications";
+import { loadPublicPoem } from "@/lib/public-content/functions";
+import { freshPublicContent, validPoemSlug } from "@/lib/public-content/route-options";
 
 export const Route = createFileRoute("/poesia/$slug")({
-  loader: ({ params }) => {
-    const poem = getPoem(params.slug);
-    if (!poem) throw notFound();
-    return { poem };
+  ...freshPublicContent,
+  loader: async ({ params }) => {
+    if (!validPoemSlug(params.slug)) throw notFound();
+    const data = await loadPublicPoem({ data: { slug: params.slug } });
+    if (!data) throw notFound();
+    return data;
   },
   head: ({ loaderData }) =>
     loaderData
@@ -18,25 +20,33 @@ export const Route = createFileRoute("/poesia/$slug")({
             ? `«${loaderData.poem.text.split("\n").slice(0, 2).join(" ")}» — poema de Trinity.`
             : `${loaderData.poem.title}, poema de Trinidad López · Trinity.`,
         )
-      : { meta: [{ title: "Poema no encontrado · Trinity" }, { name: "robots", content: "noindex" }] },
+      : {
+          meta: [
+            { title: "Poema no disponible · Trinity" },
+            { name: "robots", content: "noindex" },
+          ],
+        },
   component: PoemPage,
   notFoundComponent: () => (
     <div className="mx-auto max-w-2xl px-6 py-24 text-center">
       <p className="font-serif text-3xl">Este poema no existe.</p>
-      <Link to="/poesia" className="text-link mt-8">Volver a Poesía</Link>
+      <Link to="/poesia" className="text-link mt-8">
+        Volver a Poesía
+      </Link>
     </div>
   ),
   errorComponent: () => (
     <div className="mx-auto max-w-2xl px-6 py-24 text-center">
       <p className="font-serif text-3xl">No se ha podido cargar el poema.</p>
-      <Link to="/poesia" className="text-link mt-8">Volver a Poesía</Link>
+      <Link to="/poesia" className="text-link mt-8">
+        Volver a Poesía
+      </Link>
     </div>
   ),
 });
 
 function PoemPage() {
-  const { poem } = Route.useLoaderData();
-  const pub = poem.publication ? getPublication(poem.publication) : undefined;
+  const { poem, publication: pub } = Route.useLoaderData();
   return (
     <article className="mx-auto max-w-2xl px-6 pb-24 pt-12 sm:px-10 lg:pt-20">
       <Link to="/poesia" className="text-link">
@@ -45,9 +55,7 @@ function PoemPage() {
       <h1 className="fade-up mt-12 text-5xl italic leading-tight sm:text-6xl">{poem.title}</h1>
       {poem.writtenOn && <p className="eyebrow mt-3">Escrito el {poem.writtenOn}</p>}
       <div className="fade-up mt-12">
-        {poem.text ? (
-          <p className="poem text-xl leading-[1.7] sm:text-2xl">{poem.text}</p>
-        ) : null}
+        {poem.text ? <p className="poem text-xl leading-[1.7] sm:text-2xl">{poem.text}</p> : null}
       </div>
       <p className="mt-14 font-script text-5xl leading-none text-rose">Trinity</p>
       {pub && (

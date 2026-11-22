@@ -2,23 +2,46 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { pageMeta } from "@/lib/seo";
 import { PageIntro, Section } from "@/components/site/PageIntro";
-import { publications } from "@/content/publications";
-import { getPoem } from "@/content/poems";
+import { loadPublicCatalog } from "@/lib/public-content/functions";
+import { freshPublicContent } from "@/lib/public-content/route-options";
+import { PublicContentError } from "@/components/site/PublicContentError";
 
 export const Route = createFileRoute("/publicaciones")({
-  head: () => pageMeta("Publicaciones", "Libros y antologías en los que participa Trinidad López · Trinity como autora."),
+  ...freshPublicContent,
+  loader: () => loadPublicCatalog(),
+  errorComponent: () => <PublicContentError kind="publicaciones" />,
+  head: ({ loaderData }) => {
+    const metadata = pageMeta(
+      "Publicaciones",
+      "Libros y antologías en los que participa Trinidad López · Trinity como autora.",
+    );
+    return {
+      meta: [...metadata.meta, ...(!loaderData ? [{ name: "robots", content: "noindex" }] : [])],
+    };
+  },
   component: Publicaciones,
 });
 
 function Publicaciones() {
+  const { publications, poems } = Route.useLoaderData();
   return (
     <>
       <PageIntro eyebrow="Publicaciones" title="Mis palabras, también en papel." />
+      {publications.length === 0 && (
+        <Section>
+          <p className="font-serif text-xl">Ahora no hay publicaciones disponibles.</p>
+        </Section>
+      )}
       {publications.map((b) => (
         <Section key={b.slug} className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
             {b.coverUrl ? (
-              <img src={b.coverUrl} alt={`Portada de ${b.title}`} className="w-full max-w-[320px]" loading="lazy" />
+              <img
+                src={b.coverUrl}
+                alt={`Portada de ${b.title}`}
+                className="w-full max-w-[320px]"
+                loading="lazy"
+              />
             ) : null}
           </div>
           <div className="md:col-span-7 md:col-start-6">
@@ -40,12 +63,12 @@ function Publicaciones() {
                 ))}
             </dl>
             {b.role && <p className="mt-6 text-foreground/80">{b.role}</p>}
-            {b.poemSlugs && (
+            {!!b.poemSlugs?.length && (
               <>
                 <p className="eyebrow mt-12">Poemas de Trinity incluidos</p>
                 <ul className="mt-4 max-w-md divide-y divide-border border-y border-border">
                   {b.poemSlugs.map((s) => {
-                    const poem = getPoem(s);
+                    const poem = poems.find((p) => p.slug === s);
                     if (!poem) return null;
                     return (
                       <li key={s}>
@@ -54,7 +77,9 @@ function Publicaciones() {
                           params={{ slug: s }}
                           className="group flex items-center justify-between gap-4 py-3"
                         >
-                          <span className="font-serif text-xl italic group-hover:text-primary">{poem.title}</span>
+                          <span className="font-serif text-xl italic group-hover:text-primary">
+                            {poem.title}
+                          </span>
                           <ArrowRight className="h-4 w-4 shrink-0 text-rose" aria-hidden />
                         </Link>
                       </li>
@@ -69,7 +94,9 @@ function Publicaciones() {
                 <ul>
                   {b.purchaseLinks.map((l) => (
                     <li key={l.url}>
-                      <a className="text-link" href={l.url}>{l.label}</a>
+                      <a className="text-link" href={l.url}>
+                        {l.label}
+                      </a>
                     </li>
                   ))}
                 </ul>

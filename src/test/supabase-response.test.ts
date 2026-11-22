@@ -118,9 +118,9 @@ describe("final server privacy boundary", () => {
     ])
       expectPrivate(protectSessionResponse(request, new Response("ok")));
   });
-  it("leaves anonymous public content untouched", () => {
+  it("leaves other anonymous pages untouched", () => {
     const response = new Response("public", { headers: { "Cache-Control": "public, max-age=60" } });
-    expect(protectSessionResponse(new Request("https://preview.example/poesia"), response)).toBe(
+    expect(protectSessionResponse(new Request("https://preview.example/sobre-mi"), response)).toBe(
       response,
     );
   });

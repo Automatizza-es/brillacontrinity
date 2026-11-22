@@ -21,7 +21,14 @@
     "test:migration-plan": "node --test scripts/poetry-migration-plan.test.mjs",
     "apply:poetry-migration": "node scripts/apply-poetry-migration.mjs",
     "test:migration-apply": "node --test scripts/apply-poetry-migration.test.mjs",
-    "reconcile:poetry-migration": "node scripts/reconcile-poetry-migration.mjs"
+    "reconcile:poetry-migration": "node scripts/reconcile-poetry-migration.mjs",
+    "prepare:poems-import": "node scripts/prepare-original-poems-import.mjs",
+    "check:poems-import": "node scripts/prepare-original-poems-import.mjs --check",
+    "test:poems-import": "node --test scripts/original-poems-import.test.mjs",
+    "test:poems-import:local": "node scripts/test-original-poems-import-local.mjs",
+    "test:public:http:local": "node scripts/test-public-content-http-local.mjs",
+    "build:vercel": "NITRO_PRESET=vercel vite build",
+    "check:preview-build": "node scripts/check-preview-build.mjs"
   },
   "overrides": {
     "rolldown": "1.2.1"
@@ -104,5 +111,8 @@
     "typescript-eslint": "^8.56.1",
     "vite": "8.1.6",
     "vitest": "^4.1.12"
+  },
+  "engines": {
+    "node": "24.x"
   }
 }

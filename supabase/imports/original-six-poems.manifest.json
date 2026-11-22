@@ -1,0 +1,102 @@
+{
+  "sourceSha256": "1c7bb3671c17b689f707493a7ddbf08a3b87386d28a67c56a781a2f2ffe0d3a1",
+  "publication": {
+    "slug": "cuentos-y-poesia",
+    "title": "Cuentos y poesía",
+    "publisher": "Editorial Rubin",
+    "place": "San Luis, Argentina",
+    "year": 2026,
+    "kind": "Antología colectiva",
+    "role": "Autora participante: Trinidad López (Trinity)",
+    "synopsis": null,
+    "cover_url": "/images/portada-cuentos-y-poesia.jpeg",
+    "isbn": null,
+    "purchase_links": []
+  },
+  "poems": [
+    {
+      "slug": "atrevete-a-brillar",
+      "url": "/poesia/atrevete-a-brillar",
+      "title": "Atrévete a brillar",
+      "bodySha256": "93241e212efd6d5d265e3fcea77a33921e32e67b20244ba2656d849de252a4ba",
+      "bodyUtf8Bytes": 544,
+      "lineCount": 16,
+      "written_on": "2023-05-07",
+      "written_on_original": "7 de mayo de 2023",
+      "sort_order": 0,
+      "publication_slug": null,
+      "status": "published",
+      "published_at": null
+    },
+    {
+      "slug": "quise-ser",
+      "url": "/poesia/quise-ser",
+      "title": "Quise ser…",
+      "bodySha256": "5db1ed698338e01dcd96eaebd13329a99e7e0d547582cf9ab8e28fc332d68d53",
+      "bodyUtf8Bytes": 381,
+      "lineCount": 12,
+      "written_on": null,
+      "written_on_original": null,
+      "sort_order": 1,
+      "publication_slug": null,
+      "status": "published",
+      "published_at": null
+    },
+    {
+      "slug": "circulo-de-mujeres",
+      "url": "/poesia/circulo-de-mujeres",
+      "title": "Círculo de mujeres",
+      "bodySha256": "33ea7e7d94c0a2d69a03775c338a642111b71ff280fb4faafdff6726de633437",
+      "bodyUtf8Bytes": 443,
+      "lineCount": 18,
+      "written_on": null,
+      "written_on_original": null,
+      "sort_order": 2,
+      "publication_slug": "cuentos-y-poesia",
+      "status": "published",
+      "published_at": null
+    },
+    {
+      "slug": "yo-soy-agua",
+      "url": "/poesia/yo-soy-agua",
+      "title": "Yo soy agua",
+      "bodySha256": "5d959760e18bdcb1f6a8ef90f4e292076fd3087b19f49db9e77aa43975e65139",
+      "bodyUtf8Bytes": 873,
+      "lineCount": 27,
+      "written_on": null,
+      "written_on_original": null,
+      "sort_order": 3,
+      "publication_slug": "cuentos-y-poesia",
+      "status": "published",
+      "published_at": null
+    },
+    {
+      "slug": "me-pierdo",
+      "url": "/poesia/me-pierdo",
+      "title": "Me pierdo…",
+      "bodySha256": "54805c48759f372faa0791da9b074465706ae0e9006841fd01b9759d848fdde4",
+      "bodyUtf8Bytes": 791,
+      "lineCount": 23,
+      "written_on": null,
+      "written_on_original": null,
+      "sort_order": 4,
+      "publication_slug": "cuentos-y-poesia",
+      "status": "published",
+      "published_at": null
+    },
+    {
+      "slug": "desaprendiendo",
+      "url": "/poesia/desaprendiendo",
+      "title": "Desaprendiendo",
+      "bodySha256": "ce8626ca532f3329851305bc0cbb8529423c7cc276bea9adcc30b1944fb605fb",
+      "bodyUtf8Bytes": 422,
+      "lineCount": 14,
+      "written_on": null,
+      "written_on_original": null,
+      "sort_order": 5,
+      "publication_slug": "cuentos-y-poesia",
+      "status": "published",
+      "published_at": null
+    }
+  ]
+}

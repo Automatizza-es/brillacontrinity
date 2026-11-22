@@ -2,22 +2,47 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { pageMeta } from "@/lib/seo";
 import { PageIntro, Section } from "@/components/site/PageIntro";
-import { poems } from "@/content/poems";
-import { getPublication } from "@/content/publications";
+import { loadPublicCatalog } from "@/lib/public-content/functions";
+import { freshPublicContent } from "@/lib/public-content/route-options";
+import { PublicContentError } from "@/components/site/PublicContentError";
 
 export const Route = createFileRoute("/poesia/")({
-  head: () => pageMeta("Poesía", "Biblioteca de poemas de Trinity: palabras sobre aceptación, libertad y la importancia de ser quienes somos."),
+  ...freshPublicContent,
+  loader: () => loadPublicCatalog(),
+  errorComponent: () => <PublicContentError kind="poemas" />,
+  head: ({ loaderData }) => {
+    const metadata = pageMeta(
+      "Poesía",
+      "Biblioteca de poemas de Trinity: palabras sobre aceptación, libertad y la importancia de ser quienes somos.",
+    );
+    return {
+      meta: [...metadata.meta, ...(!loaderData ? [{ name: "robots", content: "noindex" }] : [])],
+    };
+  },
   component: PoesiaIndex,
 });
 
 function PoesiaIndex() {
+  const { poems, publications } = Route.useLoaderData();
   return (
     <>
-      <PageIntro eyebrow="Poesía" title={<>Palabras que <span className="italic text-primary">respiran</span></>} />
+      <PageIntro
+        eyebrow="Poesía"
+        title={
+          <>
+            Palabras que <span className="italic text-primary">respiran</span>
+          </>
+        }
+      />
       <Section>
+        {poems.length === 0 && (
+          <p className="font-serif text-xl">Ahora no hay poemas publicados.</p>
+        )}
         <ol className="divide-y divide-border border-b border-border">
           {poems.map((p) => {
-            const pub = p.publication ? getPublication(p.publication) : undefined;
+            const pub = p.publication
+              ? publications.find((b) => b.slug === p.publication)
+              : undefined;
             return (
               <li key={p.slug}>
                 <Link
@@ -26,7 +51,9 @@ function PoesiaIndex() {
                   className="group grid gap-3 py-8 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-baseline sm:gap-10"
                 >
                   <div className="min-w-0">
-                    <h2 className="text-3xl italic transition-colors group-hover:text-primary sm:text-4xl">{p.title}</h2>
+                    <h2 className="text-3xl italic transition-colors group-hover:text-primary sm:text-4xl">
+                      {p.title}
+                    </h2>
                     {p.description && <p className="mt-2 text-muted-foreground">{p.description}</p>}
                     <p className="eyebrow mt-3">
                       {pub ? (

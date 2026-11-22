@@ -1,13 +1,23 @@
 import { CONTACT_MAILTO } from "@/lib/contact";
-import { getPoem } from "@/content/poems";
+import { loadPublicCatalog, loadPublicPoem } from "@/lib/public-content/functions";
+import { freshPublicContent } from "@/lib/public-content/route-options";
+import { PublicContentError } from "@/components/site/PublicContentError";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import heroBotanico from "@/assets/hero-botanico.jpg";
 import { pageMeta } from "@/lib/seo";
 import { Signature } from "@/components/site/Signature";
-import { publications } from "@/content/publications";
 
 export const Route = createFileRoute("/")({
+  ...freshPublicContent,
+  loader: async () => {
+    const [catalog, featured] = await Promise.all([
+      loadPublicCatalog(),
+      loadPublicPoem({ data: { slug: "yo-soy-agua" } }),
+    ]);
+    return { ...catalog, featured: featured?.poem ?? null };
+  },
+  errorComponent: () => <PublicContentError kind="poemas" />,
   head: () =>
     pageMeta(
       "Atrévete a brillar",
@@ -38,7 +48,12 @@ const paths = [
 ];
 
 function Index() {
-  const book = publications[0]!;
+  const { publications, poems, featured } = Route.useLoaderData();
+  const book = publications.find((b) => b.slug === "cuentos-y-poesia");
+  const selectedQuote = "Yo soy todo eso y mi error\nes querer no serlo";
+  const quoteStart = featured?.text?.indexOf(selectedQuote) ?? -1;
+  const quote =
+    quoteStart >= 0 ? featured!.text!.slice(quoteStart, quoteStart + selectedQuote.length) : null;
   return (
     <>
       {/* Hero */}
@@ -56,8 +71,7 @@ function Index() {
             <p className="eyebrow fade-up">Autoconocimiento · Coaching · Poesía</p>
             <h1 className="fade-up mt-5 text-[clamp(3.6rem,8.5vw,7rem)] leading-[0.9] tracking-[-0.02em]">
               Atrévete
-              <br />
-              a brillar<span className="text-rose">.</span>
+              <br />a brillar<span className="text-rose">.</span>
             </h1>
             <p className="fade-up mt-6 max-w-md font-serif text-2xl leading-snug text-foreground/85">
               Un espacio para conocerte, aceptarte tal como eres y dar voz a tu propia luz.
@@ -106,7 +120,6 @@ function Index() {
         </div>
       </section>
 
-
       {/* Presentación */}
       <section className="mx-auto max-w-7xl border-t border-border px-6 py-20 sm:px-10 lg:py-28">
         <div className="grid gap-10 md:grid-cols-12">
@@ -119,63 +132,77 @@ function Index() {
           </h2>
           <div className="space-y-6 text-lg leading-relaxed text-foreground/80 md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-7">
             <p>
-              A veces pasamos tanto tiempo intentando ser lo que se espera de nosotros que olvidamos escuchar quiénes
-              somos realmente.
+              A veces pasamos tanto tiempo intentando ser lo que se espera de nosotros que olvidamos
+              escuchar quiénes somos realmente.
             </p>
             <p>
-              Creo que cada persona tiene su propia manera de sentir, de vivir y de expresarse. Y que aprender a
-              reconocernos, aceptarnos y mirar nuestra vida desde otra perspectiva puede abrirnos nuevos caminos.
+              Creo que cada persona tiene su propia manera de sentir, de vivir y de expresarse. Y
+              que aprender a reconocernos, aceptarnos y mirar nuestra vida desde otra perspectiva
+              puede abrirnos nuevos caminos.
             </p>
             <p>
-              Soy Trinidad López, Trinity, y aquí comparto tres formas de explorar ese camino: la numerología, el
-              acompañamiento personal y la poesía.
+              Soy Trinidad López, Trinity, y aquí comparto tres formas de explorar ese camino: la
+              numerología, el acompañamiento personal y la poesía.
             </p>
           </div>
         </div>
       </section>
 
       {/* Poema */}
-      <section className="border-y border-border bg-card">
-        <div className="mx-auto max-w-4xl px-6 py-28 text-center sm:px-10 lg:py-44">
-          <blockquote>
-            <p className="poem text-[clamp(2.2rem,6vw,4.5rem)] italic leading-[1.15]">
-              “Yo soy todo eso y mi error{"\n"}es querer no serlo”
-            </p>
-            <footer className="eyebrow mt-12">
-              Trinity — <cite className="not-italic">Yo soy agua</cite>
-            </footer>
-          </blockquote>
-        </div>
-      </section>
+      {quote && (
+        <section className="border-y border-border bg-card">
+          <div className="mx-auto max-w-4xl px-6 py-28 text-center sm:px-10 lg:py-44">
+            <blockquote>
+              <p className="poem text-[clamp(2.2rem,6vw,4.5rem)] italic leading-[1.15]">
+                “{quote}”
+              </p>
+              <footer className="eyebrow mt-12">
+                Trinity — <cite className="not-italic">{featured?.title}</cite>
+              </footer>
+            </blockquote>
+          </div>
+        </section>
+      )}
 
       {/* Publicación */}
-      <section className="mx-auto max-w-7xl px-6 py-20 sm:px-10 lg:py-32">
-        <div className="grid items-start gap-12 md:grid-cols-12">
-          <div className="md:col-span-4">
-            {publications[0]?.coverUrl && (
-              <img src={publications[0].coverUrl} alt={`Portada de ${publications[0].title}`} className="w-full max-w-[280px]" loading="lazy" />
-            )}
+      {book && (
+        <section className="mx-auto max-w-7xl px-6 py-20 sm:px-10 lg:py-32">
+          <div className="grid items-start gap-12 md:grid-cols-12">
+            <div className="md:col-span-4">
+              {book.coverUrl && (
+                <img
+                  src={book.coverUrl}
+                  alt={`Portada de ${book.title}`}
+                  className="w-full max-w-[280px]"
+                  loading="lazy"
+                />
+              )}
+            </div>
+            <div className="md:col-span-7 md:col-start-6">
+              <p className="eyebrow">Publicación</p>
+              <h2 className="mt-5 text-4xl leading-tight sm:text-5xl">
+                Mis palabras, también en papel.
+              </h2>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-foreground/80">
+                Cuatro de mis poemas forman parte de <em>{book.title}</em>, una obra colectiva
+                publicada en {book.place} por {book.publisher} en {book.year}.
+              </p>
+              <ul className="mt-8 max-w-md divide-y divide-border border-y border-border">
+                {book.poemSlugs
+                  ?.map((s) => poems.find((p) => p.slug === s)?.title)
+                  .map((t) => (
+                    <li key={t} className="py-3 font-serif text-xl italic">
+                      {t}
+                    </li>
+                  ))}
+              </ul>
+              <Link to="/publicaciones" className="text-link mt-10">
+                Descubrir la publicación <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
+            </div>
           </div>
-          <div className="md:col-span-7 md:col-start-6">
-            <p className="eyebrow">Publicación</p>
-            <h2 className="mt-5 text-4xl leading-tight sm:text-5xl">Mis palabras, también en papel.</h2>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-foreground/80">
-              Cuatro de mis poemas forman parte de <em>{book.title}</em>, una obra colectiva publicada en{" "}
-              {book.place} por {book.publisher} en {book.year}.
-            </p>
-            <ul className="mt-8 max-w-md divide-y divide-border border-y border-border">
-              {book.poemSlugs?.map((s) => getPoem(s)?.title ?? s).map((t) => (
-                <li key={t} className="py-3 font-serif text-xl italic">
-                  {t}
-                </li>
-              ))}
-            </ul>
-            <Link to="/publicaciones" className="text-link mt-10">
-              Descubrir la publicación <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Cierre */}
       <section className="mx-auto max-w-5xl border-t border-border px-6 py-24 text-center sm:px-10 lg:py-36">
@@ -193,4 +220,3 @@ function Index() {
     </>
   );
 }
-

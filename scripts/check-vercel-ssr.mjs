@@ -1,4 +1,6 @@
-// Run after NITRO_PRESET=vercel npm run build. No network/deployment required.
+// Run after npm run build:vercel. Serves the artifact locally; connected pages
+// require public env values and read-only network access to their Supabase API.
+// Never deploys or modifies remote data.
 import handler from "../.vercel/output/functions/__server.func/index.mjs";
 
 for (const path of [
@@ -14,6 +16,12 @@ for (const path of [
   "/contacto",
 ]) {
   const response = await handler.fetch(new Request(`http://localhost${path}`), { waitUntil() {} });
+  if (
+    process.env.VERCEL_ENV === "preview" &&
+    !response.headers.get("X-Robots-Tag")?.includes("noindex")
+  ) {
+    throw new Error(`Preview indexing protection missing: ${path}`);
+  }
   const html = await response.text();
   if (response.status !== 200 || !html.includes('<html lang="es"')) {
     throw new Error(`SSR failed: ${path} (${response.status})`);
