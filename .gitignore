@@ -38,3 +38,6 @@ dist-ssr
 supabase/.temp/
 supabase/.branches/
 .vercel/
+
+# Original publisher material stays local; only selected web derivatives are public.
+/material-editorial/

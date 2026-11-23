@@ -28,7 +28,8 @@
     "test:poems-import:local": "node scripts/test-original-poems-import-local.mjs",
     "test:public:http:local": "node scripts/test-public-content-http-local.mjs",
     "build:vercel": "NITRO_PRESET=vercel vite build",
-    "check:preview-build": "node scripts/check-preview-build.mjs"
+    "check:preview-build": "node scripts/check-preview-build.mjs",
+    "preview:editorial": "node scripts/preview-editorial.mjs"
   },
   "overrides": {
     "rolldown": "1.2.1"
