@@ -1,4 +1,5 @@
--- PREPARED ONLY: do not execute before approval and deployment of the cover assets.
+-- PREPARED ONLY: execute personally only after approval, before frontend deployment.
+-- Keep the existing cover URL valid until the new frontend serves optimized derivatives.
 -- Destination: brilla-con-trinity / gwckhuwespupovgweahj / Frankfurt.
 -- Optimistic comparison with the read-only snapshot; no inserts and no poem updates.
 begin;
@@ -17,7 +18,7 @@ begin
   update public.publications set
     title = proposal->>'title', publisher = proposal->>'publisher', year = (proposal->>'year')::integer,
     kind = proposal->>'kind', role = proposal->>'role', synopsis = proposal->>'synopsis',
-    cover_url = proposal->>'cover_url', purchase_links = proposal->'purchase_links'
+    cover_url = target.cover_url, purchase_links = proposal->'purchase_links', updated_at = now()
   where id = target.id;
 end $update_publication$;
 -- Inspect these public fields before confirming success; UUIDs are omitted.

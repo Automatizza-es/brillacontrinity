@@ -48,6 +48,19 @@ describe("Published anthology presentation", () => {
     expect(screen.getByText(proposal.role)).toBeInTheDocument();
     expect(screen.getByRole("img")).toHaveAttribute("width", "960");
   });
+  it("renders the approved cover while keeping the pre-deployment database URL compatible", () => {
+    render(
+      <PublicationFeature
+        publication={{ ...publication, coverUrl: "/images/portada-cuentos-y-poesia.jpeg" }}
+        poems={poems}
+      />,
+    );
+    expect(screen.getByRole("img")).toHaveAttribute("src", "/images/voces-entretejidas-960.webp");
+    expect(screen.getByRole("img")).toHaveAttribute(
+      "srcset",
+      expect.stringContaining("480.webp 480w"),
+    );
+  });
   it("does not link to poems absent from the published catalog", () => {
     render(
       <PublicationFeature

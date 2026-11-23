@@ -11,13 +11,18 @@ export function PublicationFeature({
   publication: Publication;
   poems: Poem[];
 }) {
-  const responsiveCover = b.coverUrl === "/images/voces-entretejidas-960.webp";
+  // Keep the existing database URL valid before deployment; this release renders
+  // the approved derivatives for the anthology without another remote write.
+  const responsiveCover =
+    b.coverUrl === "/images/voces-entretejidas-960.webp" ||
+    (b.slug === "cuentos-y-poesia" && b.coverUrl === "/images/portada-cuentos-y-poesia.jpeg");
+  const coverSrc = responsiveCover ? "/images/voces-entretejidas-960.webp" : b.coverUrl;
   return (
     <Section className="grid items-start gap-10 md:grid-cols-12 lg:gap-12">
       <div className="md:col-span-5">
         {b.coverUrl && (
           <img
-            src={b.coverUrl}
+            src={coverSrc}
             srcSet={
               responsiveCover
                 ? "/images/voces-entretejidas-480.webp 480w, /images/voces-entretejidas-960.webp 960w"
