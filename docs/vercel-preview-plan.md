@@ -4,7 +4,7 @@
 
 Rama: `prep/phase-1-supabase`. La propietaria ha validado personalmente /admin, los seis originales, Poesía, Publicaciones y la publicación/retirada de un poema nuevo. Esta etapa prepara y registra cambios locales. No autoriza todavía publicar un Preview, hacer push que lo active, modificar configuración remota ni variables de Production.
 
-No hay `.vercel/project.json` que vincule este directorio con un proyecto. No se encontró una CLI Vercel instalada ni un conector Vercel disponible. Al abrir el dashboard en modo lectura apareció la pantalla de login; no se inició sesión ni se cambió nada. La propietaria confirmó la URL https://vercel.com/mjlopezzs-projects/brillacontrinity. Al abrirla en el navegador integrado se redirigió al login; siguen pendientes los ajustes privados hasta que la propietaria inicie sesión personalmente. El contenido transitorio de carga anterior a esa redirección no se considera evidencia del estado del proyecto. No se afirma haber auditado la configuración privada que no fue accesible.
+La propietaria abrió personalmente la sesión de Vercel. El 23 de noviembre de 2026 se revisó en modo lectura el proyecto https://vercel.com/mjlopezzs-projects/brillacontrinity, sin guardar campos, mostrar valores de variables ni iniciar despliegues. El proyecto corresponde al repositorio Automatizza-es/brillacontrinity. No se ha creado una vinculación local de CLI ni utilizado tokens o bypasses. La revisión remota de configuración está completada; la ejecución remota sigue pendiente de autorización.
 
 ## Compatibilidad comprobada localmente
 
@@ -26,28 +26,40 @@ npm run check:preview-build
 
 El segundo comprueba estructura SSR, runtime y patrones de credenciales en los artefactos, sin desplegar. No contiene un comando de publicación.
 
-## Comprobación remota pendiente, solo lectura
+## Configuración remota verificada, solo lectura
 
-Antes de proponer un cambio remoto definitivo debe identificarse el proyecto Vercel que corresponde a Automatizza-es/brillacontrinity y revisar:
+| Ajuste                                           | Valor observado                                                                             |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| Proyecto / equipo                                | brillacontrinity / mjlopezzs-projects                                                       |
+| Repositorio                                      | Automatizza-es/brillacontrinity                                                             |
+| Production Branch                                | main                                                                                        |
+| Preview Branch Tracking                          | Activado; All unassigned branches                                                           |
+| Framework                                        | TanStack Start, importado desde Lovable                                                     |
+| Root Directory                                   | Vacío: raíz del repositorio                                                                 |
+| Build / Output / Install / Development overrides | Desactivados; detección automática                                                          |
+| Ignored Build Step                               | Automatic                                                                                   |
+| Node global del proyecto                         | 26.x                                                                                        |
+| Node de esta rama                                | engines.node 24.x; no requiere cambiar el ajuste global                                     |
+| Variables de entorno                             | No Environment Variables Added, con filtros All Environments/All Variables y búsqueda vacía |
+| Variables de sistema                             | Enable access to System Environment Variables activado                                      |
+| Vercel Authentication                            | Activado, Require Log In, Standard Protection                                               |
+| Deployment Protection Exceptions                 | Ningún dominio listado                                                                      |
+| Checks existentes                                | Lint Vercel y TypeCheck Vercel; no se alteran                                               |
+| Production actual                                | Ready; dominio brillacontrinity.vercel.app; fuente main, commit 85449a1                     |
 
-- URL, nombre y equipo/propietario del proyecto.
-- Production Branch actual. Debe confirmarse que esta rama de preparación no la activa.
-- Root Directory (la raíz que contiene package.json), framework detectado, Build Command, Output Directory y versión Node.
-- Instalación compatible con el bun.lock existente, sin actualizar dependencias o regenerar otro lockfile.
-- Overrides de salida estática: no debe servirse solo dist, porque se necesitan las funciones SSR de `.vercel/output`.
-- Alcance de variables existentes mediante nombres y entornos, sin revelar sus valores.
-- Deployment Protection y acceso de las personas que revisarán el Preview.
-- Si un push a esta rama produce Preview automáticamente o hay restricciones/ignored build steps.
+El dato Node 26.x describe la selección global del proyecto observada; el package.json de esta rama fija 24.x para reproducir el runtime ya validado. No se cambia esa selección global ni la rama main. Los comandos por defecto se resuelven mediante la autodetección del framework y el lockfile existente; la versión concreta del instalador se verificará en los registros del primer Preview.
 
-No modificar configuraciones globales de Build/Output/Node para corregir Preview sin evaluar si afectarían futuros builds de Production. Si existe una incompatibilidad, presentar su cambio exacto y alcance antes de tocarla.
+No hay que cambiar Framework, Build/Output/Install overrides, Root Directory, Ignored Build Step, protección, variables de sistema ni dominios. Un push a prep/phase-1-supabase activará Preview, no Production. No se hará ese push hasta recibir autorización.
+
+La protección actual exige que la revisora inicie sesión en Vercel y tenga acceso al equipo; dentro de esa protección sigue siendo necesario iniciar sesión en Supabase como Trinity para administrar. No se generarán enlaces de bypass, excepciones ni nuevas cuentas para sortear los controles.
 
 ## Variables propuestas: exclusivamente Preview
 
-| Nombre                        | Uso                                                | Alcance propuesto                                         |
-| ----------------------------- | -------------------------------------------------- | --------------------------------------------------------- |
-| VITE_SUPABASE_URL             | Project URL del Supabase aprobado                  | Preview, preferiblemente limitada a prep/phase-1-supabase |
-| VITE_SUPABASE_PUBLISHABLE_KEY | Publishable key del mismo proyecto                 | Preview, preferiblemente limitada a esa rama              |
-| NITRO_PRESET                  | vercel, para hacer explícito el artefacto de build | Preview, limitada a esa rama si hace falta                |
+| Nombre                        | Uso                                                | Alcance propuesto                         |
+| ----------------------------- | -------------------------------------------------- | ----------------------------------------- |
+| VITE_SUPABASE_URL             | Project URL del Supabase aprobado                  | Preview, limitada a prep/phase-1-supabase |
+| VITE_SUPABASE_PUBLISHABLE_KEY | Publishable key del mismo proyecto                 | Preview, limitada a esa rama              |
+| NITRO_PRESET                  | vercel, para hacer explícito el artefacto de build | Preview, limitada a esa rama              |
 
 Las dos variables VITE son públicas por diseño; no deben recibir nunca secret key, service_role, PAT, contraseña PostgreSQL ni contraseñas de usuarias. Sus valores reales se introducirán en la interfaz de Vercel después de autorización, sin pegarlos en el chat ni guardarlos en Git. Estarán disponibles durante build y ejecución de las funciones.
 
@@ -107,11 +119,11 @@ No asumir que actualmente hay exactamente siete registros: Trinity puede haber c
 ## Cambios remotos que se presentarían para autorización
 
 1. Guardar las variables aprobadas exclusivamente en Preview y, cuando sea posible, para esta rama.
-2. Mantener o activar la protección aprobada del Preview sin alterar Production.
+2. Mantener Vercel Authentication / Standard Protection ya activo, sin cambios ni excepciones.
 3. Solo después de verificar la Production Branch y tener las variables correctas, hacer push de esta rama para que la integración Git cree el Preview, o acordar otra vía Preview explícita si el proyecto no usa Git. El push ya puede publicar; no se realiza durante la preparación.
 4. Probar acceso de forma personal y ejecutar únicamente las comprobaciones autorizadas. Cualquier cambio de Node/Build/Output remoto o de Supabase adicional requiere presentar primero su efecto concreto.
 
-La decisión sobre los datos está confirmada. La URL del proyecto Vercel está identificada: https://vercel.com/mjlopezzs-projects/brillacontrinity. Sigue pendiente abrir su sesión y revisar la configuración mediante acceso de solo lectura. La preparación local no autoriza publicar ni cambiar configuración remota. No se ha hecho push, deploy, promoción, cambio de dominio ni merge.
+La decisión sobre los datos está confirmada y el proyecto Vercel se ha revisado con sesión abierta, exclusivamente en lectura. La preparación local no autoriza publicar ni cambiar configuración remota. No se ha hecho push, deploy, promoción, cambio de dominio ni merge.
 
 ## Fuentes oficiales consultadas
 
@@ -124,6 +136,8 @@ La decisión sobre los datos está confirmada. La URL del proyecto Vercel está 
 
 ## Alcance de la próxima autorización
 
-Tras identificar y revisar el proyecto, presentar juntos: nombres y alcance Preview de las variables (dos públicas de Supabase y preset Nitro), protección exacta de acceso existente o cambio propuesto solo para Preview, rama/commit y mecanismo que creará el despliegue, y el único poema temporal de prueba. No hacer push antes de esa autorización porque puede activar un despliegue. No cambiar Site URL ni Redirect URLs de Supabase para el login con contraseña actual. Los valores reales de las variables no se incluyen en este documento ni en respuestas del chat.
+La propuesta concreta lista para aprobación es: crear VITE_SUPABASE_URL y VITE_SUPABASE_PUBLISHABLE_KEY con los valores públicos existentes de brilla-con-trinity, y NITRO_PRESET=vercel, únicamente en Preview para prep/phase-1-supabase; mantener Standard Protection sin cambios; hacer push exclusivamente de esta rama al repositorio ya conectado para generar el Preview; revisar acceso/SSR/noindex/404/SEO/móvil y probar un único poema temporal dentro del alcance aprobado, dejando los originales, antología y datos previos intactos. No hacer push antes de esa autorización porque puede activar un despliegue. No cambiar Site URL ni Redirect URLs de Supabase para el login con contraseña actual. Los valores reales de las variables no se incluyen en este documento ni en respuestas del chat.
 
 El mero nombre del repositorio GitHub no basta para asegurar cuál es el proyecto Vercel o su Production Branch. No se elige un proyecto por suposición ni se crea otro proyecto Vercel para sortear esa comprobación.
+
+La captura local `/tmp/trinity-vercel-settings-review.jpg` muestra el framework TanStack Start y el override de Build Command desactivado. No contiene valores de variables ni credenciales. La rama de Production y el seguimiento Preview se leyeron en sus tarjetas específicas; no se usó el estado transitorio de carga como evidencia.
