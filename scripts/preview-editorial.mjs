@@ -10,6 +10,15 @@ const source = publications[0];
 const proposal = JSON.parse(
   await readFile(new URL("../supabase/updates/voces-entretejidas.json", import.meta.url), "utf8"),
 );
+const snapshot = await readFile(
+  new URL("../.editorial-public-catalog.local", import.meta.url),
+  "utf8",
+)
+  .then(JSON.parse)
+  .catch((error) => {
+    if (error.code === "ENOENT") return null;
+    throw error;
+  });
 const book = {
   id: "book-1",
   slug: source.slug,
@@ -23,20 +32,24 @@ const book = {
   cover_url: source.coverUrl,
   isbn: null,
   purchase_links: [],
+  ...snapshot?.publications.find((b) => b.slug === proposal.slug),
   ...proposal,
 };
-const rows = poems.map((p, i) => ({
-  id: `poem-${i}`,
-  slug: p.slug,
-  title: p.title,
-  body: p.text,
-  description: null,
-  written_on: i === 0 ? "2023-05-07" : null,
-  written_on_original: p.writtenOn ?? null,
-  publication_id: p.publication ? "book-1" : null,
-  sort_order: i,
-  status: "published",
-}));
+const rows =
+  snapshot?.poems ??
+  poems.map((p, i) => ({
+    id: `poem-${i}`,
+    slug: p.slug,
+    title: p.title,
+    body: p.text,
+    description: null,
+    written_on: i === 0 ? "2023-05-07" : null,
+    written_on_original: p.writtenOn ?? null,
+    publication_id: p.publication ? "book-1" : null,
+    first_published_at: "2026-11-22T17:09:43.439841Z",
+    sort_order: i,
+    status: "published",
+  }));
 const api = createServer((req, res) => {
   assert.equal(req.method, "GET");
   assert.ok(req.headers.apikey === key, "Only synthetic test keys permitted");
@@ -47,13 +60,23 @@ const api = createServer((req, res) => {
   let values;
   if (u.pathname === "/rest/v1/poems") {
     assert.equal(u.searchParams.get("status"), "eq.published");
+    if (!u.searchParams.has("slug"))
+      assert.equal(
+        u.searchParams.get("order"),
+        "first_published_at.asc.nullsfirst,sort_order.asc,id.asc",
+      );
     values = rows
       .filter(
         (p) =>
           p.status === "published" &&
           (!u.searchParams.has("slug") || "eq." + p.slug === u.searchParams.get("slug")),
       )
-      .sort((a, b) => a.sort_order - b.sort_order || a.id.localeCompare(b.id));
+      .sort(
+        (a, b) =>
+          (a.first_published_at ?? "").localeCompare(b.first_published_at ?? "") ||
+          a.sort_order - b.sort_order ||
+          a.id.localeCompare(b.id),
+      );
   } else if (u.pathname === "/rest/v1/publications")
     values = [book].filter(
       (b) => !u.searchParams.has("id") || "eq." + b.id === u.searchParams.get("id"),

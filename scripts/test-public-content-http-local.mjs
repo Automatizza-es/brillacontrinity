@@ -31,6 +31,7 @@ const rows = poems.map((p, i) => ({
   written_on: i === 0 ? "2023-05-07" : null,
   written_on_original: p.writtenOn ?? null,
   publication_id: p.publication ? "book-1" : null,
+  first_published_at: "2026-11-22T17:09:43.439841Z",
   sort_order: i,
   status: "published",
 }));
@@ -41,7 +42,8 @@ rows.push({
   title: "Prueba de publicación local",
   body: "Texto temporal\n\nSegunda estrofa\n",
   publication_id: "book-1",
-  sort_order: 6,
+  sort_order: 0,
+  first_published_at: null,
   status: "draft",
 });
 let failure = false,
@@ -63,13 +65,23 @@ const api = createServer((req, res) => {
   let values;
   if (u.pathname === "/rest/v1/poems") {
     assert.equal(u.searchParams.get("status"), "eq.published");
+    if (!u.searchParams.has("slug"))
+      assert.equal(
+        u.searchParams.get("order"),
+        "first_published_at.asc.nullsfirst,sort_order.asc,id.asc",
+      );
     values = rows
       .filter(
         (p) =>
           p.status === "published" &&
           (!u.searchParams.has("slug") || "eq." + p.slug === u.searchParams.get("slug")),
       )
-      .sort((a, b) => a.sort_order - b.sort_order || a.id.localeCompare(b.id));
+      .sort(
+        (a, b) =>
+          (a.first_published_at ?? "").localeCompare(b.first_published_at ?? "") ||
+          a.sort_order - b.sort_order ||
+          a.id.localeCompare(b.id),
+      );
   } else if (u.pathname === "/rest/v1/publications")
     values = books.filter(
       (b) => !u.searchParams.has("id") || "eq." + b.id === u.searchParams.get("id"),
@@ -171,15 +183,25 @@ try {
   console.log(
     "PASS SSR HTML, all six source texts, public links, dates/SEO, private draft and unknown-slug 404.",
   );
+  const originalUrls = poems.map((p) => "/poesia/" + p.slug);
+  async function publicUrls() {
+    return [...(await page("/poesia")).querySelectorAll("main ol a")].map((a) =>
+      a.getAttribute("href"),
+    );
+  }
+  rows.at(-1).first_published_at ??= "2026-11-23T16:09:08Z";
   rows.at(-1).status = "published";
   let doc = await page("/poesia/borrador-simulado");
   assert.equal(doc.querySelector("p.poem").textContent, rows.at(-1).body);
-  assert.equal((await page("/poesia")).querySelectorAll("main ol a").length, 7);
+  assert.deepEqual(await publicUrls(), [...originalUrls, "/poesia/borrador-simulado"]);
   rows.at(-1).status = "draft";
   await page("/poesia/borrador-simulado", 404, {
     Cookie: "sb-synthetic-auth-token=invalid-test-value",
   });
-  assert.equal((await page("/poesia")).querySelectorAll("main ol a").length, 6);
+  assert.deepEqual(await publicUrls(), originalUrls);
+  rows.at(-1).status = "published";
+  assert.deepEqual(await publicUrls(), [...originalUrls, "/poesia/borrador-simulado"]);
+  rows.at(-1).status = "draft";
   rows.find((p) => p.slug === "yo-soy-agua").status = "draft";
   await page("/poesia/yo-soy-agua", 404);
   assert.equal(
@@ -192,6 +214,7 @@ try {
     (await page("/")).querySelector("blockquote p.poem").textContent,
     "“Yo soy todo eso y mi error\nes querer no serlo”",
   );
+  assert.deepEqual(await publicUrls(), originalUrls);
   rows[0].body = "Texto editado local\n\nOtra estrofa\n";
   assert.equal(
     (await page("/poesia/" + rows[0].slug)).querySelector("p.poem").textContent,

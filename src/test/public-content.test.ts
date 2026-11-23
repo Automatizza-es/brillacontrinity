@@ -33,6 +33,7 @@ function harness() {
     written_on: i === 0 ? "2023-05-07" : null,
     written_on_original: p.writtenOn ?? null,
     publication_id: p.publication ? baseBook.id : null,
+    first_published_at: "2026-11-22T17:09:43.439841Z",
     sort_order: i,
     status: "published",
   }));
@@ -61,14 +62,22 @@ function harness() {
     let data: unknown[];
     if (url.pathname.endsWith("/poems")) {
       expect(url.searchParams.get("status")).toBe("eq.published");
-      expect(url.searchParams.get("order") ?? "sort_order.asc,id.asc").toContain("sort_order.asc");
+      if (!url.searchParams.has("slug"))
+        expect(url.searchParams.get("order")).toBe(
+          "first_published_at.asc.nullsfirst,sort_order.asc,id.asc",
+        );
       data = state.rows
         .filter(
           (p) =>
             (state.ignoreFilter || p.status === "published") &&
             (!url.searchParams.has("slug") || "eq." + p.slug === url.searchParams.get("slug")),
         )
-        .sort((a, b) => a.sort_order - b.sort_order || a.id.localeCompare(b.id));
+        .sort(
+          (a, b) =>
+            (a.first_published_at ?? "").localeCompare(b.first_published_at ?? "") ||
+            a.sort_order - b.sort_order ||
+            a.id.localeCompare(b.id),
+        );
     } else {
       expect(url.pathname.endsWith("/publications")).toBe(true);
       data = state.books.filter(
@@ -154,6 +163,35 @@ describe("Anonymous published content service", () => {
       "nuevo-poema-publicado",
     );
   });
+  it("appends new publications by their first publication, preserving positions through edits and republication", async () => {
+    const h = harness();
+    const originalSlugs = poems.map((p) => p.slug);
+    // Reverse input, zero order and early UUIDs reproduce the actual regression.
+    const first = {
+      ...h.state.rows[0]!,
+      id: "000-first",
+      slug: "nuevo-primero",
+      sort_order: 0,
+      first_published_at: "2026-11-23T16:09:08Z",
+    };
+    const second = {
+      ...first,
+      id: "000-before-first",
+      slug: "nuevo-segundo",
+      first_published_at: "2026-11-24T10:00:00Z",
+    };
+    h.state.rows.unshift(second, first);
+    const slugs = async () => (await h.service.catalog()).poems.map((p) => p.slug);
+    expect(await slugs()).toEqual([...originalSlugs, first.slug, second.slug]);
+    first.body = "Texto editado, sin cambio de posición.";
+    first.title = "Título editado";
+    expect(await slugs()).toEqual([...originalSlugs, first.slug, second.slug]);
+    first.status = "draft";
+    expect(await slugs()).toEqual([...originalSlugs, second.slug]);
+    first.status = "published";
+    expect(await slugs()).toEqual([...originalSlugs, first.slug, second.slug]);
+    expect((await h.service.poem(first.slug))?.poem.text).toBe(first.body);
+  });
   it("does not return old results, empty success or 404 on provider/network errors", async () => {
     const h = harness();
     expect(await h.service.poem("atrevete-a-brillar")).not.toBeNull();
@@ -187,6 +225,7 @@ describe("Anonymous published content service", () => {
       ...h.state.rows[0]!,
       id: `p-${i}`,
       slug: `poema-${i}`,
+      first_published_at: "2026-11-22T17:09:43.439841Z",
       sort_order: i,
     }));
     expect((await h.service.catalog()).poems).toHaveLength(201);

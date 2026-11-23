@@ -110,6 +110,8 @@ export function createPublicContentService(getClient: () => SupabaseClient) {
               .from("poems")
               .select(POEM_SUMMARY_FIELDS)
               .eq("status", "published")
+              // Immutable server timestamp: edits and republication must not move poems.
+              .order("first_published_at", { ascending: true, nullsFirst: true })
               .order("sort_order")
               .order("id")
               .range(from, to),
