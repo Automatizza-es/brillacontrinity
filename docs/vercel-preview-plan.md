@@ -4,7 +4,7 @@
 
 Rama: `prep/phase-1-supabase`. La propietaria ha validado personalmente /admin, los seis originales, Poesía, Publicaciones y la publicación/retirada de un poema nuevo. Esta etapa prepara y registra cambios locales. No autoriza todavía publicar un Preview, hacer push que lo active, modificar configuración remota ni variables de Production.
 
-No hay `.vercel/project.json` que vincule este directorio con un proyecto. No se encontró una CLI Vercel instalada ni un conector Vercel disponible. Al abrir el dashboard en modo lectura apareció la pantalla de login; no se inició sesión ni se cambió nada. La URL/proyecto remoto y sus ajustes siguen pendientes de confirmar con la propietaria. No se afirma haber auditado la configuración privada que no fue accesible.
+No hay `.vercel/project.json` que vincule este directorio con un proyecto. No se encontró una CLI Vercel instalada ni un conector Vercel disponible. Al abrir el dashboard en modo lectura apareció la pantalla de login; no se inició sesión ni se cambió nada. La propietaria confirmó la URL https://vercel.com/mjlopezzs-projects/brillacontrinity. Al abrirla en el navegador integrado se redirigió al login; siguen pendientes los ajustes privados hasta que la propietaria inicie sesión personalmente. El contenido transitorio de carga anterior a esa redirección no se considera evidencia del estado del proyecto. No se afirma haber auditado la configuración privada que no fue accesible.
 
 ## Compatibilidad comprobada localmente
 
@@ -111,7 +111,7 @@ No asumir que actualmente hay exactamente siete registros: Trinity puede haber c
 3. Solo después de verificar la Production Branch y tener las variables correctas, hacer push de esta rama para que la integración Git cree el Preview, o acordar otra vía Preview explícita si el proyecto no usa Git. El push ya puede publicar; no se realiza durante la preparación.
 4. Probar acceso de forma personal y ejecutar únicamente las comprobaciones autorizadas. Cualquier cambio de Node/Build/Output remoto o de Supabase adicional requiere presentar primero su efecto concreto.
 
-La decisión sobre los datos está confirmada. Sigue pendiente identificar la URL exacta del proyecto Vercel y revisar su configuración mediante acceso de solo lectura. La preparación local no autoriza publicar ni cambiar configuración remota. No se ha hecho push, deploy, promoción, cambio de dominio ni merge.
+La decisión sobre los datos está confirmada. La URL del proyecto Vercel está identificada: https://vercel.com/mjlopezzs-projects/brillacontrinity. Sigue pendiente abrir su sesión y revisar la configuración mediante acceso de solo lectura. La preparación local no autoriza publicar ni cambiar configuración remota. No se ha hecho push, deploy, promoción, cambio de dominio ni merge.
 
 ## Fuentes oficiales consultadas
 
