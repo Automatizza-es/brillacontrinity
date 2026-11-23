@@ -55,13 +55,13 @@ VERCEL_ENV es una variable del sistema que Vercel proporciona para identificar P
 
 No se necesita VITE_SITE_URL, una secret key de Supabase ni un token Vercel en el repositorio. No se realiza env pull, login, link ni cambios de sesiones globales durante esta preparación.
 
-## Aislamiento de datos: decisión pendiente
+## Aislamiento de datos: decisión confirmada
 
-Preview separa código, URL y variables de Production, pero no crea otra base de datos. Si usa brilla-con-trinity, comparte poemas, cuentas y políticas con ese proyecto. Publicar o retirar desde ese Preview cambia esos mismos datos, aunque el despliegue de producción no se toque.
+La propietaria confirmó el 23 de noviembre de 2026 que Preview utilizará el proyecto Supabase actual brilla-con-trinity, referencia gwckhuwespupovgweahj, Frankfurt. No se creará otro proyecto. Preview separa código, URL y variables de Production; los poemas, cuentas y políticas se comparten con ese Supabase. La publicación y retirada del poema temporal cambiarán sus datos compartidos, sin alterar el despliegue de producción.
 
-Se ha preguntado a la propietaria si aprueba ese Supabase compartido para esta prueba o quiere aislar también los datos mediante otro proyecto. No se configura un destino alternativo ni se crea un proyecto automáticamente.
+Las condiciones confirmadas son: no modificar los seis originales, la antología ni borradores anteriores; no modificar usuarios, tablas o políticas RLS; utilizar exclusivamente un poema temporal para publicar y retirar; mantener protección de acceso y noindex en Preview; no cambiar variables de Production ni fusionar main.
 
-Las pruebas de escritura real deben limitarse a un poema temporal expresamente autorizado, nunca a los seis originales ni a borradores previos. Si se exige aislamiento completo de datos, resolverlo y validar las credenciales del proyecto separado antes de publicar el Preview. No asumir que separar variables por sí solo separa los registros.
+El plan de prueba utilizará un único poema temporal con slug inequívoco, comprobando antes que esté libre. Solo se editará su propio UUID durante la prueba: guardar borrador, publicar, comprobar la URL pública, retirar y confirmar 404. Se conservará después como borrador, sin borrados automáticos. No se tocarán originales, antología, otros borradores ni configuración de Supabase. Esta elección define el alcance del plan; la propietaria exige detenerse antes de cualquier cambio remoto y solicitar autorización de la ejecución concreta.
 
 ## Autenticación, cookies y rutas privadas
 
@@ -111,7 +111,7 @@ No asumir que actualmente hay exactamente siete registros: Trinity puede haber c
 3. Solo después de verificar la Production Branch y tener las variables correctas, hacer push de esta rama para que la integración Git cree el Preview, o acordar otra vía Preview explícita si el proyecto no usa Git. El push ya puede publicar; no se realiza durante la preparación.
 4. Probar acceso de forma personal y ejecutar únicamente las comprobaciones autorizadas. Cualquier cambio de Node/Build/Output remoto o de Supabase adicional requiere presentar primero su efecto concreto.
 
-La URL exacta del proyecto y la decisión sobre los datos siguen pendientes de la propietaria. La preparación local no autoriza publicar ni cambiar configuración remota. No se ha hecho push, deploy, promoción, cambio de dominio ni merge.
+La decisión sobre los datos está confirmada. Sigue pendiente identificar la URL exacta del proyecto Vercel y revisar su configuración mediante acceso de solo lectura. La preparación local no autoriza publicar ni cambiar configuración remota. No se ha hecho push, deploy, promoción, cambio de dominio ni merge.
 
 ## Fuentes oficiales consultadas
 
@@ -121,3 +121,9 @@ La URL exacta del proyecto y la decisión sobre los datos siguen pendientes de l
 - https://vercel.com/docs/headers/response-headers
 - https://vercel.com/docs/deployment-protection
 - https://supabase.com/docs/guides/auth/redirect-urls
+
+## Alcance de la próxima autorización
+
+Tras identificar y revisar el proyecto, presentar juntos: nombres y alcance Preview de las variables (dos públicas de Supabase y preset Nitro), protección exacta de acceso existente o cambio propuesto solo para Preview, rama/commit y mecanismo que creará el despliegue, y el único poema temporal de prueba. No hacer push antes de esa autorización porque puede activar un despliegue. No cambiar Site URL ni Redirect URLs de Supabase para el login con contraseña actual. Los valores reales de las variables no se incluyen en este documento ni en respuestas del chat.
+
+El mero nombre del repositorio GitHub no basta para asegurar cuál es el proyecto Vercel o su Production Branch. No se elige un proyecto por suposición ni se crea otro proyecto Vercel para sortear esa comprobación.
