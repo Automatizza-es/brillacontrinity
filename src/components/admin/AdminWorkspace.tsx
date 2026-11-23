@@ -175,7 +175,7 @@ export function AdminWorkspace({ initial, api, onDirtyChange, onSessionChange }:
       setNotice({
         text:
           status === "published"
-            ? "Poema guardado como publicado en el gestor. La web pública mantiene todavía su contenido actual."
+            ? "Poema publicado. Ya está disponible en la web pública."
             : draft.status === "published"
               ? "Poema retirado de publicación y guardado como borrador."
               : "Borrador guardado. Tus versos y estrofas se han conservado.",
@@ -684,7 +684,7 @@ export function AdminWorkspace({ initial, api, onDirtyChange, onSessionChange }:
                     </h3>
                     <p id="confirm-description" className="mt-2 text-sm leading-relaxed">
                       {confirmation === "publish"
-                        ? "Se guardarán tus cambios y el poema quedará publicado en el gestor. La web pública aún mantiene su contenido actual."
+                        ? "Se guardarán tus cambios y el poema quedará visible en la web pública."
                         : "Se guardarán tus cambios y el poema volverá a ser un borrador privado. Su dirección se conservará."}
                     </p>
                     <div className="mt-4 flex flex-wrap gap-3">

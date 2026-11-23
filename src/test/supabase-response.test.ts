@@ -25,6 +25,7 @@ function expectPrivate(response: Response) {
 describe("TanStack HTTP response integration (no Auth/network)", () => {
   it.each([
     ["https://preview.example/admin", true],
+    ["https://brillacontrinity.vercel.app/admin", true],
     ["http://localhost:3000/admin", false],
     ["http://127.0.0.1:3000/admin", false],
     ["https://localhost:3000/admin", true],
